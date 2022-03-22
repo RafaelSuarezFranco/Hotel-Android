@@ -1,0 +1,24 @@
+inherited Principal_iPhone55in: TPrincipal_iPhone55in
+  ClientHeight = 716
+  ClientWidth = 414
+  DesignerMasterStyle = 3
+  inherited ScrollBox1: TScrollBox
+    Viewport.Width = 250.000000000000000000
+    Viewport.Height = 500.000000000000000000
+  end
+  inherited SpeedButton1: TSpeedButton
+    Size.Height = 44.000000000000000000
+    inherited Image1: TImage
+      MultiResBitmap.Height = 249
+      MultiResBitmap.Width = 272
+    end
+  end
+  inherited SpeedButton2: TSpeedButton
+    Size.Height = 44.000000000000000000
+    inherited Image2: TImage
+      MultiResBitmap.Height = 249
+      MultiResBitmap.Width = 272
+      Position.Y = 24.000000000000000000
+    end
+  end
+end

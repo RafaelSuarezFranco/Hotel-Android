@@ -1,0 +1,186 @@
+object Tablas: TTablas
+  Left = 0
+  Top = 0
+  Caption = 'Form3'
+  ClientHeight = 566
+  ClientWidth = 621
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 3
+  object MyConnection1: TMyConnection
+    Database = 'hotelrsf'
+    Port = 4006
+    Username = 'usuario'
+    Server = 'torredelrey.ddns.net'
+    Connected = True
+    LoginPrompt = False
+    Left = 56
+    Top = 32
+    EncryptedPassword = 'ACFF9AFF89FF96FF93FF93FF9EFFCEFFDAFF'
+  end
+  object MyTableClientes: TMyTable
+    TableName = 'clientes'
+    Connection = MyConnection1
+    Options.FieldOrigins = foNone
+    Left = 56
+    Top = 112
+    object MyTableClientesid: TIntegerField
+      FieldName = 'id'
+    end
+    object MyTableClientesidentificador: TStringField
+      FieldName = 'identificador'
+      Size = 50
+    end
+    object MyTableClientesnombre: TStringField
+      FieldName = 'nombre'
+      Size = 100
+    end
+    object MyTableClientesapellidos: TStringField
+      FieldName = 'apellidos'
+      Size = 150
+    end
+  end
+  object MyTableEntradas: TMyTable
+    TableName = 'entradas'
+    Connection = MyConnection1
+    Options.FieldOrigins = foNone
+    Left = 56
+    Top = 184
+    object MyTableEntradasid: TIntegerField
+      FieldName = 'id'
+    end
+    object MyTableEntradasnumerohabitacion: TIntegerField
+      FieldName = 'numerohabitacion'
+    end
+    object MyTableEntradasfecha: TDateField
+      FieldName = 'fecha'
+    end
+    object MyTableEntradasestado: TStringField
+      FieldName = 'estado'
+      Size = 50
+    end
+    object MyTableEntradascliente: TStringField
+      FieldName = 'cliente'
+      Size = 50
+    end
+    object MyTableEntradaspreciofinal: TFloatField
+      FieldName = 'preciofinal'
+    end
+  end
+  object MyTableEntradasservicios: TMyTable
+    TableName = 'entradasservicios'
+    Connection = MyConnection1
+    Options.FieldOrigins = foNone
+    Left = 56
+    Top = 256
+    object MyTableEntradasserviciosid: TIntegerField
+      FieldName = 'id'
+    end
+    object MyTableEntradasserviciosnumerohabitacion: TIntegerField
+      FieldName = 'numerohabitacion'
+    end
+    object MyTableEntradasserviciosfecha: TDateField
+      FieldName = 'fecha'
+    end
+    object MyTableEntradasserviciosnombreservicio: TStringField
+      FieldName = 'nombreservicio'
+      Size = 50
+    end
+  end
+  object MyTableHabitaciones: TMyTable
+    TableName = 'habitaciones'
+    Connection = MyConnection1
+    Options.FieldOrigins = foNone
+    Left = 64
+    Top = 320
+    object MyTableHabitacionesid: TIntegerField
+      FieldName = 'id'
+    end
+    object MyTableHabitacionesnumero: TIntegerField
+      FieldName = 'numero'
+    end
+    object MyTableHabitacionestipo: TStringField
+      FieldName = 'tipo'
+      Size = 50
+    end
+    object MyTableHabitacionespreciobase: TFloatField
+      FieldName = 'preciobase'
+    end
+  end
+  object MyTableHistoricoentradas: TMyTable
+    TableName = 'historicoentradas'
+    Connection = MyConnection1
+    Options.FieldOrigins = foNone
+    Left = 56
+    Top = 376
+    object MyTableHistoricoentradasid: TIntegerField
+      FieldName = 'id'
+    end
+    object MyTableHistoricoentradasnumerohabitacion: TIntegerField
+      FieldName = 'numerohabitacion'
+    end
+    object MyTableHistoricoentradasfecha: TDateField
+      FieldName = 'fecha'
+    end
+    object MyTableHistoricoentradascliente: TStringField
+      FieldName = 'cliente'
+      Size = 50
+    end
+    object MyTableHistoricoentradaspreciofinal: TFloatField
+      FieldName = 'preciofinal'
+    end
+    object MyTableHistoricoentradasestado: TStringField
+      FieldName = 'estado'
+      Size = 50
+    end
+  end
+  object MyTableServicios: TMyTable
+    TableName = 'servicios'
+    Connection = MyConnection1
+    Options.FieldOrigins = foNone
+    Left = 56
+    Top = 440
+    object MyTableServiciosid: TIntegerField
+      FieldName = 'id'
+    end
+    object MyTableServiciosnombreservicio: TStringField
+      FieldName = 'nombreservicio'
+      Size = 50
+    end
+    object MyTableServiciosprecioservicio: TFloatField
+      FieldName = 'precioservicio'
+    end
+  end
+  object MyTableTemporadas: TMyTable
+    TableName = 'temporadas'
+    Connection = MyConnection1
+    Options.FieldOrigins = foNone
+    Left = 64
+    Top = 496
+    object MyTableTemporadasid: TIntegerField
+      FieldName = 'id'
+    end
+    object MyTableTemporadasfechainicio: TDateField
+      FieldName = 'fechainicio'
+    end
+    object MyTableTemporadasfechafin: TDateField
+      FieldName = 'fechafin'
+    end
+    object MyTableTemporadasnombretemporada: TStringField
+      FieldName = 'nombretemporada'
+      Size = 50
+    end
+    object MyTableTemporadasprecioadicional: TFloatField
+      FieldName = 'precioadicional'
+    end
+  end
+  object MyQuery1: TMyQuery
+    Connection = MyConnection1
+    SQL.Strings = (
+      'select * from clientes;')
+    Options.FieldOrigins = foNone
+    Left = 448
+    Top = 40
+  end
+end

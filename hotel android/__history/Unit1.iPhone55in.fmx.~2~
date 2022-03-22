@@ -1,0 +1,5 @@
+inherited Principal_iPhone55in: TPrincipal_iPhone55in
+  ClientHeight = 716
+  ClientWidth = 414
+  DesignerMasterStyle = 3
+end

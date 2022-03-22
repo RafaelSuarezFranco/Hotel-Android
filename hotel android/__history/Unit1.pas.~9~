@@ -1,0 +1,93 @@
+unit Unit1;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  FMX.Controls.Presentation, FMX.StdCtrls, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
+  FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
+   FireDAC.FMXUI.Wait,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Data.SqlExpr, FMX.DateTimeCtrls,  System.DateUtils,
+  FMX.Layouts, FMX.Objects;
+
+type
+  TPrincipal = class(TForm)
+    Label1: TLabel;
+    Button1: TButton;
+    Button2: TButton;
+    ScrollBox1: TScrollBox;
+    DateEdit1: TDateEdit;
+    SpeedButton1: TSpeedButton;
+    Image1: TImage;
+    SpeedButton2: TSpeedButton;
+    Image2: TImage;
+    procedure Button2Click(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure DateEdit1Change(Sender: TObject);
+    procedure CargarDia();
+    procedure Image1Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    Fechaseleccionada: TDate;
+  end;
+
+var
+  Principal: TPrincipal;
+
+implementation
+
+{$R *.fmx}
+{$R *.iPhone55in.fmx IOS}
+  uses
+    Unit2, Unit3;
+
+
+procedure TPrincipal.Button2Click(Sender: TObject);
+begin
+    PantallaMes.Show;
+end;
+
+  procedure TPrincipal.DateEdit1Change(Sender: TObject);
+begin
+   Fechaseleccionada := DateEdit1.Date;
+end;
+
+procedure TPrincipal.FormActivate(Sender: TObject);
+begin
+  Tablas.MyTableClientes.Open;
+  Tablas.MyTableHabitaciones.Open;
+  Tablas.MyTableEntradas.Open;
+  Tablas.MyTableEntradasservicios.Open;
+  Tablas.MyTableHistoricoentradas.Open;
+  Tablas.MyTableTemporadas.Open;
+  Tablas.MyTableServicios.Open;
+  Tablas.MyQuery1.Open;
+
+  Fechaseleccionada := Now();
+end;
+
+
+procedure TPrincipal.Image1Click(Sender: TObject);
+begin
+    FechaSeleccionada := IncDay(FechaSeleccionada, -1);
+     CargarDia()
+end;
+
+procedure TPrincipal.SpeedButton1Click(Sender: TObject);
+begin
+      FechaSeleccionada := IncDay(FechaSeleccionada, 1);
+     CargarDia()
+end;
+
+procedure TPrincipal.CargarDia();
+begin
+    DateEdit1.Date := FechaSeleccionada;
+end;
+
+end.
