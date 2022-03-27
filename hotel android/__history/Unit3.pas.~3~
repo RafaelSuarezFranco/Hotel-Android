@@ -1,0 +1,115 @@
+unit Unit3;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, Data.DB,  System.DateUtils,
+  MyAccess, MemDS, DBAccess, FMX.ListBox;
+
+type
+  TTablas = class(TForm)
+    MyConnection12: TMyConnection;
+    MyTableClientes: TMyTable;
+    MyTableClientesid: TIntegerField;
+    MyTableClientesidentificador: TStringField;
+    MyTableClientesnombre: TStringField;
+    MyTableClientesapellidos: TStringField;
+    MyTableEntradas: TMyTable;
+    MyTableEntradasservicios: TMyTable;
+    MyTableHabitaciones: TMyTable;
+    MyTableHistoricoentradas: TMyTable;
+    MyTableServicios: TMyTable;
+    MyTableTemporadas: TMyTable;
+    MyQuery1: TMyQuery;
+    MyTableEntradasid: TIntegerField;
+    MyTableEntradasnumerohabitacion: TIntegerField;
+    MyTableEntradasfecha: TDateField;
+    MyTableEntradasestado: TStringField;
+    MyTableEntradascliente: TStringField;
+    MyTableEntradaspreciofinal: TFloatField;
+    MyTableEntradasserviciosid: TIntegerField;
+    MyTableEntradasserviciosnumerohabitacion: TIntegerField;
+    MyTableEntradasserviciosfecha: TDateField;
+    MyTableEntradasserviciosnombreservicio: TStringField;
+    MyTableHabitacionesid: TIntegerField;
+    MyTableHabitacionesnumero: TIntegerField;
+    MyTableHabitacionestipo: TStringField;
+    MyTableHabitacionespreciobase: TFloatField;
+    MyTableHistoricoentradasid: TIntegerField;
+    MyTableHistoricoentradasnumerohabitacion: TIntegerField;
+    MyTableHistoricoentradasfecha: TDateField;
+    MyTableHistoricoentradascliente: TStringField;
+    MyTableHistoricoentradaspreciofinal: TFloatField;
+    MyTableHistoricoentradasestado: TStringField;
+    MyTableServiciosid: TIntegerField;
+    MyTableServiciosnombreservicio: TStringField;
+    MyTableServiciosprecioservicio: TFloatField;
+    MyTableTemporadasid: TIntegerField;
+    MyTableTemporadasfechainicio: TDateField;
+    MyTableTemporadasfechafin: TDateField;
+    MyTableTemporadasnombretemporada: TStringField;
+    MyTableTemporadasprecioadicional: TFloatField;
+    MyConnection1: TMyConnection;
+    function formatearFechaSQL(fecha: TDate): String;
+    function rellenarComboHabitaciones(combo: TCombobox):TComboBox;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Tablas: TTablas;
+
+implementation
+
+{$R *.fmx}
+
+
+//formatea una fecha de tipo TDate a una String que se pueda usar en las FDQueries.
+
+function TTablas.formatearFechaSQL(fecha: TDate): String;
+  var
+  diabusqueda: String;
+  mesbusqueda: String;
+  fechabusqueda: String;
+begin
+    diabusqueda := IntToStr(DayOfTheMonth(fecha));
+    mesbusqueda := IntToStr(MonthOfTheYear(fecha));
+    if length(diabusqueda) < 2 then
+        diabusqueda:= '0'+ diabusqueda;
+    if length(mesbusqueda) < 2 then
+        mesbusqueda:= '0'+ mesbusqueda;
+    fechabusqueda:= IntToStr(YearOf(fecha))+'-'+mesbusqueda+'-'+diabusqueda;  //fecha formateada para buscarla con SQL
+
+    formatearFechaSQL := fechabusqueda;
+end;
+
+
+
+//recibe un combobox a rellenar, lo vacía y lo rellena con los números de habitación.
+
+function TTablas.rellenarComboHabitaciones(combo: TComboBox):TComboBox;
+  var
+cantidadHabitaciones: integer;
+i : integer;
+begin
+    i:=0;
+    cantidadHabitaciones:= Tablas.MyTableHabitaciones.RecordCount;
+
+    combo.Items.Clear; //vaciar el combobox para rellenarlo con las habitaciones
+    Tablas.MyTableHabitaciones.First;
+      while not  Tablas.MyTableHabitaciones.Eof do
+        begin
+          combo.Items.Add(IntToStr(Tablas.MyTableHabitacionesnumero.Value));
+          i:=i+1;
+          Tablas.MyTableHabitaciones.Next;
+        end;
+
+    //combo.Style := csDropDownList; //readonly
+    combo.ItemIndex := 0; //selecciona el primero
+
+    rellenarComboHabitaciones := combo;
+end;
+end.

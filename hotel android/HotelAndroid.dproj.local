@@ -2,13 +2,16 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2022/03/08 17:07:53.000.572,=C:\Users\Rafael\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2022/03/08 17:08:45.000.612,C:\Users\Rafael\Documents\Embarcadero\Studio\Projects\Unit1.fmx=C:\Users\Rafael\Desktop\hotel android\Unit1.fmx</Transaction>
     <Transaction>2022/03/08 17:08:45.000.612,C:\Users\Rafael\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\Rafael\Desktop\hotel android\Unit1.pas</Transaction>
+    <Transaction>2022/03/08 17:08:45.000.612,C:\Users\Rafael\Documents\Embarcadero\Studio\Projects\Unit1.fmx=C:\Users\Rafael\Desktop\hotel android\Unit1.fmx</Transaction>
     <Transaction>2022/03/08 17:08:56.000.978,C:\Users\Rafael\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Rafael\Desktop\hotel android\HotelAndroid.dproj</Transaction>
     <Transaction>2022/03/08 22:34:50.000.616,=C:\Users\Rafael\Desktop\hotel android\Unit2.pas</Transaction>
     <Transaction>2022/03/14 18:09:04.000.465,=C:\Users\Rafael\Desktop\hotel android\Unit3.pas</Transaction>
+    <Transaction>2022/03/23 16:51:07.000.930,=C:\Users\Rafael\Desktop\Hotel-Android\hotel android\Unit4.pas</Transaction>
+    <Transaction>2022/03/25 17:33:47.000.037,=C:\Users\Rafael\Desktop\Hotel-Android\hotel android\Unit5.pas</Transaction>
+    <Transaction>2022/03/25 17:39:58.000.449,=C:\Users\Rafael\Desktop\Hotel-Android\hotel android\Unit6.pas</Transaction>
   </Transactions>
 	<ActiveMobileDevice>
-		<NoProfile iOSSimulator="iPhone5" Android=""/>
+		<NoProfile iOSSimulator="iPhone5" Android="097219670805" Android64=""/>
 	</ActiveMobileDevice>
 </BorlandProject>

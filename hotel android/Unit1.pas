@@ -62,7 +62,8 @@ implementation
 
 procedure TPrincipal.Button2Click(Sender: TObject);
 begin
-    PantallaMes.Show;
+    Label1.Text:= 'xd';
+
 end;
 
   procedure TPrincipal.DateEdit1Change(Sender: TObject);

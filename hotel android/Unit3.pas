@@ -5,11 +5,12 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, Data.DB,  System.DateUtils,
-  MyAccess, MemDS, DBAccess, FMX.ListBox;
+  MyAccess, MemDS, DBAccess, FMX.ListBox, FMX.Controls.Presentation,
+  FMX.StdCtrls;
 
 type
   TTablas = class(TForm)
-    MyConnection1: TMyConnection;
+    MyConnection12: TMyConnection;
     MyTableClientes: TMyTable;
     MyTableClientesid: TIntegerField;
     MyTableClientesidentificador: TStringField;
@@ -50,6 +51,9 @@ type
     MyTableTemporadasfechafin: TDateField;
     MyTableTemporadasnombretemporada: TStringField;
     MyTableTemporadasprecioadicional: TFloatField;
+    MyConnection1: TMyConnection;
+    Label1: TLabel;
+    Label2: TLabel;
     function formatearFechaSQL(fecha: TDate): String;
     function rellenarComboHabitaciones(combo: TCombobox):TComboBox;
   private

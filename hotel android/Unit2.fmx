@@ -781,10 +781,21 @@ object PantallaMes: TPantallaMes
     TabOrder = 11
   end
   object Button2: TButton
-    Position.X = 96.000000000000000000
-    Position.Y = 536.000000000000000000
+    Position.X = 16.000000000000000000
+    Position.Y = 592.000000000000000000
     TabOrder = 12
     Text = 'Button2'
     OnClick = Button2Click
+  end
+  object Label4: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 64.000000000000000000
+    Position.Y = 472.000000000000000000
+    Size.Width = 225.000000000000000000
+    Size.Height = 38.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 26.000000000000000000
+    Text = 'Label4'
+    TabOrder = 13
   end
 end

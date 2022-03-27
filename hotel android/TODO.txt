@@ -1,0 +1,4 @@
+reserva/anular periodo
+crear habitacion, temporada, servicio
+usuarios, correos
+alta de cliente en caliente

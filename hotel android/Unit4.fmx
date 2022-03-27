@@ -1,0 +1,153 @@
+object FormularioDiario: TFormularioDiario
+  Left = 0
+  Top = 0
+  Caption = 'Form4'
+  ClientHeight = 668
+  ClientWidth = 361
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  DesignerMasterStyle = 3
+  object Label1: TLabel
+    Position.X = 216.000000000000000000
+    Position.Y = 40.000000000000000000
+    Text = 'Estado:'
+    TabOrder = 4
+  end
+  object Label2: TLabel
+    Position.X = 16.000000000000000000
+    Position.Y = 40.000000000000000000
+    Size.Width = 113.000000000000000000
+    Size.Height = 23.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Habitaci'#243'n:'
+    TabOrder = 3
+  end
+  object Label33: TLabel
+    Position.X = 16.000000000000000000
+    Position.Y = 136.000000000000000000
+    Text = 'Fecha:'
+    TabOrder = 2
+  end
+  object RadioButton1: TRadioButton
+    GroupName = 'grupo1'
+    Position.X = 216.000000000000000000
+    Position.Y = 88.000000000000000000
+    TabOrder = 7
+    Text = 'Libre'
+  end
+  object RadioButton2: TRadioButton
+    GroupName = 'grupo1'
+    Position.X = 216.000000000000000000
+    Position.Y = 136.000000000000000000
+    TabOrder = 6
+    Text = 'Reservada'
+  end
+  object RadioButton3: TRadioButton
+    GroupName = 'grupo1'
+    Position.X = 216.000000000000000000
+    Position.Y = 184.000000000000000000
+    TabOrder = 5
+    Text = 'Ocupada'
+  end
+  object Label4: TLabel
+    Position.X = 16.000000000000000000
+    Position.Y = 248.000000000000000000
+    Text = 'Cliente:'
+    TabOrder = 1
+  end
+  object Label5: TLabel
+    Position.X = 16.000000000000000000
+    Position.Y = 328.000000000000000000
+    Text = 'Precio:'
+    TabOrder = 0
+  end
+  object Edit1: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 8
+    Position.X = 128.000000000000000000
+    Position.Y = 240.000000000000000000
+    Size.Width = 185.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Button1: TButton
+    Position.X = 128.000000000000000000
+    Position.Y = 616.000000000000000000
+    Size.Width = 105.000000000000000000
+    Size.Height = 44.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 9
+    Text = 'Aceptar'
+    OnClick = Button1Click
+  end
+  object Label6: TLabel
+    Position.X = 112.000000000000000000
+    Position.Y = 40.000000000000000000
+    Text = 'Label6'
+    TabOrder = 12
+  end
+  object Label7: TLabel
+    Position.X = 80.000000000000000000
+    Position.Y = 136.000000000000000000
+    Text = 'Label7'
+    TabOrder = 11
+  end
+  object Label3: TLabel
+    Position.X = 80.000000000000000000
+    Position.Y = 328.000000000000000000
+    Text = 'Label3'
+    TabOrder = 10
+  end
+  object Rectangle1: TRectangle
+    Fill.Color = xFFE8E7E7
+    Position.X = -24.000000000000000000
+    Position.Y = 376.000000000000000000
+    Size.Width = 386.000000000000000000
+    Size.Height = 225.000000000000000000
+    Size.PlatformDefault = False
+    object ScrollBox1: TScrollBox
+      Position.X = 24.000000000000000000
+      Position.Y = 8.000000000000000000
+      Size.Width = 361.000000000000000000
+      Size.Height = 209.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Viewport.Width = 361.000000000000000000
+      Viewport.Height = 209.000000000000000000
+      object Label66: TLabel
+        Position.X = 16.000000000000000000
+        Position.Y = 16.000000000000000000
+        Text = 'Servicios'
+        TabOrder = 1
+      end
+      object Label77: TLabel
+        Position.X = 224.000000000000000000
+        Position.Y = 16.000000000000000000
+        Size.Width = 121.000000000000000000
+        Size.Height = 23.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Precio final:'
+        TabOrder = 0
+      end
+      object Edit2: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 2
+        Position.X = 224.000000000000000000
+        Position.Y = 56.000000000000000000
+      end
+      object ScrollBox2: TScrollBox
+        Position.X = 16.000000000000000000
+        Position.Y = 48.000000000000000000
+        Size.Width = 185.000000000000000000
+        Size.Height = 153.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 3
+        Viewport.Width = 185.000000000000000000
+        Viewport.Height = 153.000000000000000000
+      end
+    end
+  end
+end

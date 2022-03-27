@@ -22,6 +22,7 @@ type
     ComboBox1: TComboBox;
     Panel1: TPanel;
     Button2: TButton;
+    Label4: TLabel;
     procedure Button1Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     function DevolverDiasMes(): Integer;
@@ -50,11 +51,13 @@ var
   HabitacionesTodas: Array of Integer; //contiene los nº de habitaciones
   indiceHabitacion: integer;
 
+  LongMonthNames : Array[1..12] of string;
+
 implementation
 
 {$R *.fmx}
   Uses
-    Unit1, Unit3;
+    Unit1, Unit3, Unit4;
 
 procedure TPantallaMes.Button1Click(Sender: TObject);
 begin
@@ -83,6 +86,20 @@ var
 i: integer;
  cantidadHabitaciones: integer;
 begin
+
+  LongMonthNames[1] := 'Enero';
+  LongMonthNames[2] := 'Febrero';
+  LongMonthNames[3] := 'Marzo';
+  LongMonthNames[4] := 'Abril';
+  LongMonthNames[5] := 'Mayo';
+  LongMonthNames[6] := 'Junio';
+  LongMonthNames[7] := 'Julio';
+  LongMonthNames[8] := 'Agosto';
+  LongMonthNames[9] := 'Septiembre';
+  LongMonthNames[10] := 'Octubre';
+  LongMonthNames[11] := 'Noviembre';
+  LongMonthNames[12] := 'Deciembre';
+
    Combobox1.OnChange := nil;
    //debo quitar y reasignar este procedure al onChange del combobox cada vez que se activa, por algún motivo, ese prodecimiento
    //estaba causando un access violation al crear el combobox.
@@ -165,6 +182,7 @@ end;
 
 procedure TPantallaMes.CargarMes();
 var
+
 PanelDia: TRectangle;
 LabelDia: TLabel;
 i: integer;    //cantidad de dias
@@ -173,6 +191,7 @@ cantidadDias: integer;
 diasemana: integer;
 dia: integer;
 
+mes: string;
 begin
   //esconder el panel y mostrarlo cuando termina de cargar parece que añade bastante velocidad de carga.
   panel1.visible := false;
@@ -244,6 +263,9 @@ begin
       end;
 
      DateEdit1.date := FechaSeleccionada;
+
+     mes := LongMonthNames[MonthOfTheYear(FechaSeleccionada)];
+     Label4.Text:= mes + ' ' + IntToStr(YearOf(FechaSeleccionada));
      ActualizarColores2();
 
    panel1.visible := true;
@@ -266,14 +288,14 @@ begin
   panel := TPanel(Sender);
   diaSeleccionado := panel.Tag;
 
- {
+
   FormularioDiario.dia:= diaSeleccionado;
-  FormularioDiario.mes:= MonthOfTheYear(FechaSeleccionada1);
-  FormularioDiario.año:= YearOf(FechaSeleccionada1);
-  FormularioDiario.Habitacion := HabitacionSeleccionada1;
+  FormularioDiario.mes:= MonthOfTheYear(FechaSeleccionada);
+  FormularioDiario.año:= YearOf(FechaSeleccionada);
+  FormularioDiario.Habitacion := HabitacionSeleccionada;
   FormularioDiario.origen := 'pantallames';
   FormularioDiario.show();
-  }
+
 end;
 
 
