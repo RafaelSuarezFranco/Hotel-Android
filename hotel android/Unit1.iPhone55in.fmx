@@ -21,4 +21,14 @@ inherited Principal_iPhone55in: TPrincipal_iPhone55in
       Position.Y = 8.000000000000000000
     end
   end
+  inherited MultiView1: TMultiView [5]
+  end
+  inherited SpeedButton3: TSpeedButton [6]
+    Size.Height = 44.000000000000000000
+    inherited Image3: TImage
+      MultiResBitmap.Height = 249
+      MultiResBitmap.Width = 272
+      Position.Y = 24.000000000000000000
+    end
+  end
 end

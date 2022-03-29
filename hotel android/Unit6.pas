@@ -36,17 +36,29 @@ implementation
 
 
 procedure TAltaCliente.Button1Click(Sender: TObject);
+var
+identificador: String;
 begin
+
+identificador:= Edit1.Text;
+
   if (Edit1.Text <> '') and (Edit2.Text <> '') and (Edit3.Text <> '') then
     begin
-      Tablas.MyTableClientes.Append;
-      Tablas.MyTableClientesidentificador.Value := Edit1.Text;
-      Tablas.MyTableClientesnombre.Value := Edit2.Text;
-      Tablas.MyTableClientesapellidos.Value := Edit3.Text;
-      //como estamos usando un edit normal (para hacerlo readonly) debemos introducir el dato a mano.
-      Tablas.MyTableClientes.Post;
-      showmessage('Nuevo cliente dado de alta.');
-      AltaCliente.Close;
+     if not Tablas.MyTableClientes.Locate('identificador', identificador, []) then
+     begin
+        Tablas.MyTableClientes.Append;
+        Tablas.MyTableClientesidentificador.Value := Edit1.Text;
+        Tablas.MyTableClientesnombre.Value := Edit2.Text;
+        Tablas.MyTableClientesapellidos.Value := Edit3.Text;
+        //como estamos usando un edit normal (para hacerlo readonly) debemos introducir el dato a mano.
+        Tablas.MyTableClientes.Post;
+        showmessage('Nuevo cliente dado de alta.');
+        AltaCliente.Close;
+     end else
+     begin
+       showmessage('El identificador de cliente ya existe, por favor, introduzca otro.');
+     end;
+
     end else
     begin
       showmessage('Por favor, rellena todos los campos');

@@ -11,7 +11,6 @@ object AltaCliente: TAltaCliente
   object Edit1: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 0
-    ReadOnly = True
     Position.X = 64.000000000000000000
     Position.Y = 128.000000000000000000
     Size.Width = 217.000000000000000000
@@ -37,26 +36,32 @@ object AltaCliente: TAltaCliente
     Size.PlatformDefault = False
   end
   object Label1: TLabel
+    StyledSettings = [Family, Style, FontColor]
     Position.X = 96.000000000000000000
     Position.Y = 96.000000000000000000
     Size.Width = 169.000000000000000000
     Size.Height = 23.000000000000000000
     Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
     Text = 'Identificador (DNI):'
     TabOrder = 5
   end
   object Label2: TLabel
+    StyledSettings = [Family, Style, FontColor]
     Position.X = 136.000000000000000000
     Position.Y = 200.000000000000000000
+    TextSettings.Font.Size = 18.000000000000000000
     Text = 'Nombre:'
     TabOrder = 4
   end
   object Label3: TLabel
+    StyledSettings = [Family, Style, FontColor]
     Position.X = 128.000000000000000000
     Position.Y = 320.000000000000000000
     Size.Width = 97.000000000000000000
     Size.Height = 23.000000000000000000
     Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
     Text = 'Apellidos:'
     TabOrder = 3
   end
@@ -68,5 +73,6 @@ object AltaCliente: TAltaCliente
     Size.PlatformDefault = False
     TabOrder = 6
     Text = 'Dar de alta'
+    OnClick = Button1Click
   end
 end

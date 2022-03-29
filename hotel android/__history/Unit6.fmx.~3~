@@ -1,0 +1,72 @@
+object AltaCliente: TAltaCliente
+  Left = 0
+  Top = 0
+  Caption = 'Form6'
+  ClientHeight = 668
+  ClientWidth = 361
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 3
+  object Edit1: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 0
+    ReadOnly = True
+    Position.X = 64.000000000000000000
+    Position.Y = 128.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Edit2: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 1
+    Position.X = 64.000000000000000000
+    Position.Y = 232.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Edit3: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 2
+    Position.X = 64.000000000000000000
+    Position.Y = 352.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label1: TLabel
+    Position.X = 96.000000000000000000
+    Position.Y = 96.000000000000000000
+    Size.Width = 169.000000000000000000
+    Size.Height = 23.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Identificador (DNI):'
+    TabOrder = 5
+  end
+  object Label2: TLabel
+    Position.X = 136.000000000000000000
+    Position.Y = 200.000000000000000000
+    Text = 'Nombre:'
+    TabOrder = 4
+  end
+  object Label3: TLabel
+    Position.X = 128.000000000000000000
+    Position.Y = 320.000000000000000000
+    Size.Width = 97.000000000000000000
+    Size.Height = 23.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Apellidos:'
+    TabOrder = 3
+  end
+  object Button1: TButton
+    Position.X = 104.000000000000000000
+    Position.Y = 488.000000000000000000
+    Size.Width = 129.000000000000000000
+    Size.Height = 44.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 6
+    Text = 'Dar de alta'
+  end
+end

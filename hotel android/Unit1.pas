@@ -11,7 +11,7 @@ uses
    FireDAC.FMXUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Data.DB,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Data.SqlExpr, FMX.DateTimeCtrls,  System.DateUtils,
-  FMX.Layouts, FMX.Objects;
+  FMX.Layouts, FMX.Objects, FMX.MultiView;
 
 type
   TPrincipal = class(TForm)
@@ -24,6 +24,14 @@ type
     Image1: TImage;
     SpeedButton2: TSpeedButton;
     Image2: TImage;
+    Button3: TButton;
+    Button4: TButton;
+    MultiView1: TMultiView;
+    Layout1: TLayout;
+    Rectangle1: TRectangle;
+    Button5: TButton;
+    SpeedButton3: TSpeedButton;
+    Image3: TImage;
     procedure Button2Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure DateEdit1Change(Sender: TObject);
@@ -35,6 +43,10 @@ type
     procedure PulsarBotonHabitacion(Sender: TObject);
     function DevolverFechaSeleccionada():TDate;
     function DevolverHabitacionSeleccionada():Integer;
+    procedure Button1Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -57,16 +69,32 @@ implementation
 {$R *.fmx}
 {$R *.iPhone55in.fmx IOS}
   uses
-    Unit2, Unit3;
+    Unit2, Unit3, Unit5, Unit6, Unit7;
 
+
+procedure TPrincipal.Button1Click(Sender: TObject);
+begin
+  FormularioPeriodo.ModoReserva;
+  FormularioPeriodo.Show;
+end;
 
 procedure TPrincipal.Button2Click(Sender: TObject);
 begin
-    Label1.Text:= 'xd';
-
+  FormularioPeriodo.ModoAnular;
+  FormularioPeriodo.Show;
 end;
 
-  procedure TPrincipal.DateEdit1Change(Sender: TObject);
+procedure TPrincipal.Button3Click(Sender: TObject);
+begin
+   AltaCliente.Show;
+end;
+
+procedure TPrincipal.Button4Click(Sender: TObject);
+begin
+   NuevaHabitacion.show;
+end;
+
+procedure TPrincipal.DateEdit1Change(Sender: TObject);
 begin
    Fechaseleccionada := DateEdit1.Date;
    CargarDia();
@@ -99,6 +127,11 @@ procedure TPrincipal.SpeedButton2Click(Sender: TObject);
 begin
     FechaSeleccionada := IncDay(FechaSeleccionada, 1);
      CargarDia();
+end;
+
+procedure TPrincipal.SpeedButton3Click(Sender: TObject);
+begin
+    MultiView1.ShowMaster;
 end;
 
 procedure TPrincipal.CargarDia();
