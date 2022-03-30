@@ -1,7 +1,7 @@
-object Principal: TPrincipal
+object PantallaMes: TPantallaMes
   Left = 0
   Top = 0
-  Caption = 'Principal'
+  Caption = 'PantallaMes'
   ClientHeight = 668
   ClientWidth = 361
   FormFactor.Width = 320
@@ -10,43 +10,35 @@ object Principal: TPrincipal
   OnActivate = FormActivate
   DesignerMasterStyle = 3
   object Label1: TLabel
-    Position.X = 88.000000000000000000
-    Position.Y = 16.000000000000000000
-    Size.Width = 169.000000000000000000
-    Size.Height = 23.000000000000000000
-    Size.PlatformDefault = False
-    Text = 'Fecha seleccionada:'
-    TabOrder = 1
+    Position.X = 104.000000000000000000
+    Position.Y = 616.000000000000000000
+    Text = 'Label2'
+    TabOrder = 0
   end
   object Button1: TButton
-    Position.X = 40.000000000000000000
-    Position.Y = 600.000000000000000000
+    Position.X = 256.000000000000000000
+    Position.Y = 616.000000000000000000
     TabOrder = 2
     Text = 'Button1'
+    OnClick = Button1Click
   end
-  object Button2: TButton
-    Position.X = 264.000000000000000000
-    Position.Y = 600.000000000000000000
-    TabOrder = 3
-    Text = 'Button2'
-    OnClick = Button2Click
-  end
-  object ScrollBox1: TScrollBox
-    Position.X = 56.000000000000000000
-    Position.Y = 80.000000000000000000
-    Size.Width = 250.000000000000000000
-    Size.Height = 500.000000000000000000
+  object Label2: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 88.000000000000000000
+    Position.Y = 16.000000000000000000
+    Size.Width = 57.000000000000000000
+    Size.Height = 23.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 4
-    Viewport.Width = 250.000000000000000000
-    Viewport.Height = 500.000000000000000000
+    TextSettings.Font.Size = 16.000000000000000000
+    Text = 'Fecha:'
+    TabOrder = 1
   end
   object DateEdit1: TDateEdit
     Date = 44634.000000000000000000
     OnChange = DateEdit1Change
-    Position.X = 120.000000000000000000
+    Position.X = 80.000000000000000000
     Position.Y = 40.000000000000000000
-    TabOrder = 5
+    TabOrder = 4
   end
   object SpeedButton1: TSpeedButton
     Position.X = 288.000000000000000000
@@ -54,7 +46,7 @@ object Principal: TPrincipal
     Size.Width = 57.000000000000000000
     Size.Height = 48.000000000000000000
     Size.PlatformDefault = False
-    OnClick = SpeedButton2Click
+    OnClick = SpeedButton1Click
     object Image1: TImage
       MultiResBitmap.Height = 249
       MultiResBitmap.Width = 272
@@ -413,7 +405,7 @@ object Principal: TPrincipal
     Size.Width = 57.000000000000000000
     Size.Height = 48.000000000000000000
     Size.PlatformDefault = False
-    OnClick = SpeedButton1Click
+    OnClick = SpeedButton2Click
     object Image2: TImage
       MultiResBitmap.Height = 249
       MultiResBitmap.Width = 272
@@ -764,5 +756,46 @@ object Principal: TPrincipal
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
     end
+  end
+  object Label3: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 192.000000000000000000
+    Position.Y = 16.000000000000000000
+    TextSettings.Font.Size = 16.000000000000000000
+    Text = 'Habitaci'#243'n:'
+    TabOrder = 8
+  end
+  object ComboBox1: TComboBox
+    Position.X = 200.000000000000000000
+    Position.Y = 40.000000000000000000
+    Size.Width = 73.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 9
+  end
+  object Panel1: TPanel
+    Position.Y = 152.000000000000000000
+    Size.Width = 361.000000000000000000
+    Size.Height = 310.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 11
+  end
+  object Button2: TButton
+    Position.X = 16.000000000000000000
+    Position.Y = 592.000000000000000000
+    TabOrder = 12
+    Text = 'Button2'
+    OnClick = Button2Click
+  end
+  object Label4: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 64.000000000000000000
+    Position.Y = 472.000000000000000000
+    Size.Width = 225.000000000000000000
+    Size.Height = 38.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 26.000000000000000000
+    Text = 'Label4'
+    TabOrder = 13
   end
 end

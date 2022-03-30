@@ -10,8 +10,6 @@ uses
 
 type
   TPantallaMes = class(TForm)
-    Label1: TLabel;
-    Button1: TButton;
     Label2: TLabel;
     DateEdit1: TDateEdit;
     SpeedButton1: TSpeedButton;
@@ -21,9 +19,11 @@ type
     Label3: TLabel;
     ComboBox1: TComboBox;
     Panel1: TPanel;
-    Button2: TButton;
     Label4: TLabel;
-    procedure Button1Click(Sender: TObject);
+    Rectangle1: TRectangle;
+    Label1: TLabel;
+    SpeedButton3: TSpeedButton;
+    Image3: TImage;
     procedure FormActivate(Sender: TObject);
     function DevolverDiasMes(): Integer;
     function DevolverDiaSemana(): Integer;
@@ -35,6 +35,7 @@ type
     procedure DateEdit1Change(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure Button2Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -59,16 +60,11 @@ implementation
   Uses
     Unit1, Unit3, Unit4;
 
-procedure TPantallaMes.Button1Click(Sender: TObject);
-begin
-     Principal.Show;
-end;
-
 procedure TPantallaMes.Button2Click(Sender: TObject);
 var
 i: integer;
 begin
-
+      {
       Panel1.DeleteChildren;
       //primero borrar el calendario
       if Length(PanelesDia) > 0 then
@@ -78,7 +74,7 @@ begin
           PanelesDia[i].Visible := false;
           end;
       end;
-
+        }
 end;
 
 procedure TPantallaMes.FormActivate(Sender: TObject);
@@ -313,6 +309,11 @@ FechaSeleccionada:= IncMonth(FechaSeleccionada, -1);
 CargarMes();
 end;
 
+procedure TPantallaMes.SpeedButton3Click(Sender: TObject);
+begin
+ PantallaMes.Close;
+end;
+
 //pinta los paneles según las reservas, ocupaciones y temporadas
 
 procedure TPantallaMes.ActualizarColores2();
@@ -381,7 +382,7 @@ begin
         dia:= IntToStr(i+1); //hay que formatear dias y meses para que tengan 2 dígitos
         if length(dia) < 2 then
          dia:= '0'+ dia;
-      Label1.Text:=  quotedStr(stringFecha+dia);
+      //Label1.Text:=  quotedStr(stringFecha+dia);
       if Tablas.MyQuery1.Locate('fecha', EncodeDate(StrToInt(año),StrToInt(mes),StrToInt(dia)), []) then
       //recorremos cada dia del mes para la habitacion seleccionada
        begin

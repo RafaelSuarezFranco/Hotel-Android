@@ -9,7 +9,8 @@ uses
   Unit4 in 'Unit4.pas' {FormularioDiario},
   Unit5 in 'Unit5.pas' {FormularioPeriodo},
   Unit6 in 'Unit6.pas' {AltaCliente},
-  Unit7 in 'Unit7.pas' {NuevaHabitacion};
+  Unit7 in 'Unit7.pas' {NuevaHabitacion},
+  Unit8 in 'Unit8.pas' {CrearTemporada};
 
 {$R *.res}
 
@@ -23,5 +24,6 @@ begin
   Application.CreateForm(TFormularioPeriodo, FormularioPeriodo);
   Application.CreateForm(TAltaCliente, AltaCliente);
   Application.CreateForm(TNuevaHabitacion, NuevaHabitacion);
+  Application.CreateForm(TCrearTemporada, CrearTemporada);
   Application.Run;
 end.

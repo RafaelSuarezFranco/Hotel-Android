@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
-  FMX.EditBox, FMX.SpinBox, FMX.Controls.Presentation, FMX.Edit;
+  FMX.EditBox, FMX.SpinBox, FMX.Controls.Presentation, FMX.Edit, FMX.Objects;
 
 type
   TNuevaHabitacion = class(TForm)
@@ -16,7 +16,12 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Button1: TButton;
+    Rectangle1: TRectangle;
+    Label4: TLabel;
+    SpeedButton3: TSpeedButton;
+    Image3: TImage;
     procedure Button1Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -93,5 +98,10 @@ begin
 
 end;
 
+
+procedure TNuevaHabitacion.SpeedButton3Click(Sender: TObject);
+begin
+   NuevaHabitacion.Close;
+end;
 
 end.

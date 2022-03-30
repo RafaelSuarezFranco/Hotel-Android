@@ -32,6 +32,8 @@ type
     Button5: TButton;
     SpeedButton3: TSpeedButton;
     Image3: TImage;
+    Rectangle2: TRectangle;
+    Label2: TLabel;
     procedure Button2Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure DateEdit1Change(Sender: TObject);
@@ -47,6 +49,7 @@ type
     procedure Button3Click(Sender: TObject);
     procedure SpeedButton3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -69,7 +72,7 @@ implementation
 {$R *.fmx}
 {$R *.iPhone55in.fmx IOS}
   uses
-    Unit2, Unit3, Unit5, Unit6, Unit7;
+    Unit2, Unit3, Unit5, Unit6, Unit7, Unit8;
 
 
 procedure TPrincipal.Button1Click(Sender: TObject);
@@ -92,6 +95,11 @@ end;
 procedure TPrincipal.Button4Click(Sender: TObject);
 begin
    NuevaHabitacion.show;
+end;
+
+procedure TPrincipal.Button5Click(Sender: TObject);
+begin
+  CrearTemporada.show;
 end;
 
 procedure TPrincipal.DateEdit1Change(Sender: TObject);

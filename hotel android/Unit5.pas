@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, System.DateUtils,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,  FMX.DialogService,
   FMX.Layouts, FMX.Edit, FMX.ListBox, FMX.Controls.Presentation,
-  FMX.DateTimeCtrls;
+  FMX.DateTimeCtrls, FMX.Objects;
 
 type
   TFormularioPeriodo = class(TForm)
@@ -21,10 +21,15 @@ type
     ScrollBox1: TScrollBox;
     Label5: TLabel;
     Button1: TButton;
+    Rectangle1: TRectangle;
+    Label6: TLabel;
+    SpeedButton3: TSpeedButton;
+    Image3: TImage;
     procedure FormActivate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure ModoReserva();
     procedure ModoAnular();
+    procedure SpeedButton3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -352,6 +357,7 @@ begin
       Scrollbox1.Visible := True;
       Label4.Visible := True;
       Edit1.Visible := True;
+      Label6.Text := 'Reservar periodo';
     end;
   if ModoDeFormulario = 'anular' then
     begin
@@ -359,6 +365,7 @@ begin
       Scrollbox1.Visible := False;
       Label4.Visible := False;
       Edit1.Visible := False;
+      Label6.Text := 'Anular periodo';
     end;
 
 
@@ -425,6 +432,11 @@ end;
 procedure TFormularioPeriodo.ModoReserva();
 begin
   ModoDeFormulario:= 'reserva';
+end;
+
+procedure TFormularioPeriodo.SpeedButton3Click(Sender: TObject);
+begin
+  FormularioPeriodo.Close;
 end;
 
 procedure TFormularioPeriodo.ModoAnular();

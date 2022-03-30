@@ -3,9 +3,9 @@ unit Unit4;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,    System.DateUtils,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Edit, FMX.Layouts, FMX.Controls.Presentation;
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,  System.DateUtils,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,  FMX.DialogService,
+  FMX.Edit, FMX.Layouts, FMX.Controls.Presentation, FMX.Objects;
 
 type
   TFormularioDiario = class(TForm)
@@ -26,12 +26,16 @@ type
     Label6: TLabel;
     Label7: TLabel;
     Label3: TLabel;
-       procedure FormActivate(Sender: TObject);
+    Rectangle1: TRectangle;
+    ScrollBox2: TScrollBox;
+    procedure FormActivate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     function actualizarServicios(): Boolean;
     procedure borrarServicios();
     procedure RecalcularPrecio(Sender: TObject);
     procedure ActualizarPrecioTabla();
+    procedure FormCreate(Sender: TObject);
+    procedure AltaEnCaliente(identificador: String);
   private
     { Private declarations }
   public
@@ -63,12 +67,15 @@ var
   PreciosServicios: Array of Double;
 
   DiaPasado: Boolean;
+
+  NuevoEstado: String;
+  NuevoCliente: String;
 implementation
 
 {$R *.fmx}
 
 uses
-  Unit1, Unit2, Unit3;
+  Unit1, Unit2, Unit3, Unit6;
 
  //único botón del formulario, guardará los cambios realizados siempre y cuando sean válidos
 
@@ -81,10 +88,22 @@ accionCancelada: boolean;
 serviciosCambiados: boolean;
 clienteValido: boolean;
 accionValida: boolean;
+
+nombre: string;
+apellidos: string;
+
 begin
   accionRealizada:= false;
   clienteValido:= true;
   accionValida:= true;
+
+  //en esta versión por algún motivo al aceptar el radiobutton se pone en libre, por lo que tengo que guardar el nuevo estado
+  //preventivamente para no perderlo.
+  NuevoEstado := '1';
+  if RadioButton2.IsChecked then  NuevoEstado := '2';
+  if RadioButton3.IsChecked then  NuevoEstado := '3';
+
+  NuevoCliente := Edit1.Text;
 
  // ANULAR RESERVA (O BORRAR OCUPACIÓN) si vamos a liberar una habitacion, significa que vamos a borrar su registro
  // a la vez, copiaremos el registro en el historico de entradas
@@ -98,8 +117,71 @@ begin
      end else
      begin  //por el contrario, las reservas pasadas si se pueden anular (o marcar como ocupadas)
 
+     TDialogService.MessageDialog('Vas a dejar libre una habitación que estaba reservada/ocupada. Esto borrará su registro y los correspondientes datos. ¿Estás seguro?',
+      TMsgDlgType.mtConfirmation,
+     FMX.Dialogs.mbYesNo, TMsgDlgBtn.mbNo, 0,
+     procedure(const AResult: TModalResult)
+      begin
 
-      seleccion := messagedlg('Vas a dejar libre una habitación que estaba reservada/ocupada. Esto borrará su registro y los correspondientes datos. ¿Estás seguro?',mtWarning , mbOKCancel, 0);
+        if AResult = mrYes then
+         begin
+
+         BorrarServicios;
+
+         //en caso de que tengamos reserva y ocupación, habría que migrar los dos registros al histórico.
+         Tablas.MyQuery1.Close;
+         Tablas.MyQuery1.SQL.Text:= 'Select * from entradas where numerohabitacion='+IntToStr(Habitacion)+' and fecha = '+quotedStr(fechabusqueda);
+         Tablas.MyQuery1.Open;
+
+         Tablas.MyQuery1.First;
+          while not Tablas.MyQuery1.Eof do
+           begin       //añadir al histórico
+              Tablas.MyTableHistoricoentradas.Append;
+              Tablas.MyTableHistoricoentradasnumerohabitacion.value := Habitacion;
+              Tablas.MyTableHistoricoentradasfecha.Value := Fecha;
+              Tablas.MyTableHistoricoentradascliente.Value := Cliente;
+              Tablas.MyTableHistoricoentradaspreciofinal.Value := PrecioFinal;
+              Tablas.MyTableHistoricoentradasestado.Value := Tablas.MyQuery1.FieldByName('estado').AsString;
+              Tablas.MyTableHistoricoentradas.Post;
+
+              Tablas.MyQuery1.Next;
+           end;
+
+
+        //borrar de la tabla
+
+         Tablas.MyTableEntradas.Filtered:=True;
+         Tablas.MyTableEntradas.Filter:='numerohabitacion='+IntToStr(Habitacion);
+         Tablas.MyTableEntradas.First;
+
+        while not Tablas.MyTableEntradas.eof do
+           begin
+          //borramos las entradas de esta habitacion para esta fecha
+          if Tablas.MyTableEntradasFecha.Value = Fecha then
+            begin
+            Tablas.MyTableEntradas.Delete;
+            end
+            else
+            begin
+              Tablas.MyTableEntradas.Next;
+            end;
+
+          end;
+        ShowMessage('El registro de esta habitación para la fecha concreta ha sido borrado.');
+        Tablas.MyTableEntradas.Filtered:=False;
+        accionRealizada := true;
+        FormularioDiario.Close;
+        if origen = 'pantallames' then PantallaMes.cargarMes;
+        end;
+       if AResult = mrNo then
+        begin
+           ShowMessage('Acción cancelada.');
+        end;
+
+      end
+     );
+       {
+      seleccion := messagedlg('Vas a dejar libre una habitación que estaba reservada/ocupada. Esto borrará su registro y los correspondientes datos. ¿Estás seguro?',System.UITypes.TMsgDlgType.mtWarning , mbOKCancel, 0);
 
       if seleccion = mrCancel then
       begin
@@ -150,11 +232,11 @@ begin
             end;
 
           end;
-        ShowMessage('El registo de esta habitación para la fecha concreta ha sido borrado.');
+        ShowMessage('El registro de esta habitación para la fecha concreta ha sido borrado.');
         Tablas.MyTableEntradas.Filtered:=False;
         accionRealizada := true;
        end;
-
+        }
       end;
 
     end;
@@ -172,6 +254,8 @@ begin
             Showmessage('El campo del cliente no puede estar vacío.');
             accionValida := false;
           end;
+
+
 
         if (RadioButton2.IsChecked) and (DiaPasado = True) then
           begin
@@ -191,47 +275,107 @@ begin
           end;
         // esta condición no va en perjuicio de que cualquier reserva que quede en el pasado pueda ser marcada como libre u ocupada.
 
-
+          if not Tablas.MyTableClientes.Locate('identificador', Edit1.Text, []) then
+                begin
+                  clienteValido := false;
+                end else
+                begin
+                  clienteValido := true;
+                end;
 
         if accionValida then
           begin
-           {
-          AltaCliente.ImportarIdentificador(Edit1.Text); //preventivamente, mandamos el identificador al formulario.
-          clienteValido := AltaCliente.AltaEnCaliente(Edit1.Text); //abre el alta de cliente si no existe.
 
-           }clienteValido := true;
 
-          if not clienteValido then
-            begin
-              showmessage('Acción cancelada. No se puede completar la reserva con el identificador de un cliente inexistente');
-              accionRealizada:= false;
-            end
-            else  //si el cliente es válido (existía o lo acabamos de crear)
+
+
+
+
+           if clienteValido = true then
             begin
 
-            seleccion := messagedlg('¿Confirmar Reserva (u ocupación)?',System.UITypes.TMsgDlgType.mtConfirmation , mbOKCancel, 0);
+             TDialogService.MessageDialog('¿Confirmar Reserva/ocupación?', TMsgDlgType.mtConfirmation,
+              FMX.Dialogs.mbYesNo, TMsgDlgBtn.mbNo, 0,
+              procedure(const AResult: TModalResult)
+              begin
+                if AResult = mrYes then
+                 begin
+                       try
+                        precio:= strtofloat(Edit2.Text);
 
-            if seleccion = mrCancel then
+                        Tablas.MyTableEntradas.append;
+                        Tablas.MyTableEntradasnumerohabitacion.Value := Habitacion;
+                        Tablas.MyTableEntradasfecha.Value := Fecha;
+
+                        if ( NuevoEstado = '2') then
+                           begin
+                          Tablas.MyTableEntradasestado.Value:= 'reservada';
+                          end;
+
+                        if  (NuevoEstado = '3') then
+                           begin
+                            Tablas.MyTableEntradasestado.Value:= 'ocupada';
+                          end;
+
+                        Tablas.MyTableEntradascliente.Value:= NuevoCliente;
+                        PrecioFinal:= PrecioBase + TemporadaPrecio; //calcular el precio final con servicios, etc.
+                        Tablas.MyTableEntradaspreciofinal.Value := precio; //el precio es lo que aparezca en el tedit,
+                        // que de base es el precio final calculado, pero puede ser cambiado manualmente.
+
+                        if precio < 0 then //si se intenta guardar el registro con precio menor o igual a 0
+                          begin
+                             showmessage('Error: El precio final no puede ser menor que 0');
+                           end
+                           else
+                           begin
+                             Tablas.MyTableEntradas.post;
+
+                             accionRealizada:= True;
+                              FormularioDiario.Close;
+                              if origen = 'pantallames' then PantallaMes.cargarMes;
+                           end;
+
+                        except
+                          showmessage('El precio debe ser de tipo numérico.');
+                         end;
+                  if AResult = mrNo then
+                      begin
+                         ShowMessage('Acción cancelada.');
+                          accionCancelada := true;
+                      end;
+                  //mrYes: seleccion:=1;
+                  //mrNo:  seleccion:=0;
+                end;
+              end);
+
+            {seleccion := messagedlg('¿Confirmar Reserva (u ocupación)?',System.UITypes.TMsgDlgType.mtConfirmation , mbOKCancel, 0);
+
+            if seleccion = 0 then
               begin
                 ShowMessage('Acción cancelada.');
                 accionCancelada := true;
               end;
 
-            if seleccion = mrOK then
+            if seleccion = 1 then
               begin
                 try
                 precio:= strtofloat(Edit2.Text);
 
-
                 Tablas.MyTableEntradas.append;
                 Tablas.MyTableEntradasnumerohabitacion.Value := Habitacion;
                 Tablas.MyTableEntradasfecha.Value := Fecha;
-                if RadioButton2.IsChecked then
-                   Tablas.MyTableEntradasestado.Value:= 'reservada';
-                if RadioButton3.IsChecked then
-                   Tablas.MyTableEntradasestado.Value:= 'ocupada';
 
-                Tablas.MyTableEntradascliente.Value:= Edit1.Text;
+                if ( NuevoEstado = '2') then
+                   begin
+                  Tablas.MyTableEntradasestado.Value:= 'reservada';
+                  end;
+
+                if  (NuevoEstado = '3') then
+                   begin
+                    Tablas.MyTableEntradasestado.Value:= 'ocupada';
+                  end;
+
+                Tablas.MyTableEntradascliente.Value:= NuevoCliente;
                 PrecioFinal:= PrecioBase + TemporadaPrecio; //calcular el precio final con servicios, etc.
                 Tablas.MyTableEntradaspreciofinal.Value := precio; //el precio es lo que aparezca en el tedit,
                 // que de base es el precio final calculado, pero puede ser cambiado manualmente.
@@ -251,6 +395,10 @@ begin
                   showmessage('El precio debe ser de tipo numérico.');
                  end;
               end;
+              }
+             end else
+             begin
+               showmessage('Por favor, introduce un identificador de un cliente existente.');
              end;
 
           end;
@@ -301,7 +449,7 @@ begin
 
     ActualizarPrecioTabla(); //siempre que pulsemos el boton, el precio se actualizará con lo que haya en el spinner
 
-    if accionRealizada then
+    if accionRealizada = True then
     begin
      //cerramos y actualizamos la pantalla del mes (y la principal, si hemos actualizado el día de hoy).
      FormularioDiario.Close;
@@ -329,6 +477,7 @@ servicioCheck: TCheckbox;
 
 begin
 
+
   Fecha:= EncodeDate(año, mes, dia); //Tdate del formulario
 
   if Fecha < IncDay(Now(), -1) then
@@ -344,10 +493,16 @@ begin
       begin
        for i := 0 to Length(CheckboxServicios)-1 do
           begin
+          CheckboxServicios[i].Visible := false;
           CheckboxServicios[i].Free;
           end;
       end;
 
+
+  for i := (Scrollbox2.ChildrenCount - 1) downto 0 do
+  begin
+    Scrollbox2.Children[i].Free;
+  end;
 
 
   diabusqueda := IntToStr(dia);
@@ -434,11 +589,11 @@ begin
         nombresServicios[i] := Tablas.MyTableServiciosnombreservicio.Value;
 
         servicioCheck:=TCheckbox.create(self);
-        servicioCheck.Parent:=ScrollBox1;
+        servicioCheck.Parent:=ScrollBox2;
 
         servicioCheck.Tag:=i;
-        servicioCheck.Position.Y:=i*20+30;
-        servicioCheck.Position.X:=15;
+        servicioCheck.Position.Y:=i*40;//+50;
+        servicioCheck.Position.X:=5;//15;
         servicioCheck.Text:=nombresServicios[i] + ' ('+FloatToStr(Tablas.MyTableServiciosprecioservicio.Value)+'€)';
         servicioCheck.Width:= 180;
 
@@ -508,6 +663,11 @@ end;
 
 
 
+
+procedure TFormularioDiario.FormCreate(Sender: TObject);
+begin
+
+end;
 
 //GESTIÓN DE SERVICIOS (borrarlos, crearlos)
 
@@ -613,14 +773,14 @@ begin
    checkbox := TCheckbox(Sender);
    i := checkbox.Tag;
    //si checkeamos un servicio, sumamos
-   if  CheckboxServicios[i].isChecked = true then
+   if  CheckboxServicios[i].isChecked = false then
     begin
       PrecioCalculado := PrecioCalculado + PreciosServicios[i];
 
       edit2.Text := FloatToStr(Round(PrecioCalculado*100)/100);
     end;
     //si desmarcamos un servicio, restamos
-     if  CheckboxServicios[i].isChecked = false then
+     if  CheckboxServicios[i].isChecked = true then
     begin
       PrecioCalculado := PrecioCalculado - PreciosServicios[i];
 
@@ -673,5 +833,83 @@ begin
   end;
 
 end;
+
+
+
+
+
+
+
+procedure TFormularioDiario.AltaEnCaliente(identificador: String) ;
+var
+seleccion: integer;
+nombre: string;
+apellidos: string;
+begin
+  nombre := '';
+  apellidos := '';
+
+  if not Tablas.MyTableClientes.Locate('identificador', identificador, []) then
+    begin
+
+              while nombre = '' do
+                        begin
+
+                        InputBox('Nombre del cliente:','Nombre','',
+                          procedure(const AResult: TModalResult; const AValue: string)
+                          begin
+                            nombre := AValue;
+                          end
+                          );
+                        end;
+
+                       while apellidos = '' do
+                        begin
+
+                        InputBox('Apellidos del cliente:','Apellido','',
+                          procedure(const AResult: TModalResult; const AValue: string)
+                          begin
+                            apellidos := AValue;
+                          end
+                          );
+                        end;
+                         Tablas.MyTableClientes.Append;
+                          Tablas.MyTableClientesidentificador.Value := Edit1.Text;
+                          Tablas.MyTableClientesnombre.Value := nombre;
+                          Tablas.MyTableClientesapellidos.Value := apellidos;
+                          //como estamos usando un edit normal (para hacerlo readonly) debemos introducir el dato a mano.
+                          Tablas.MyTableClientes.Post;
+                          showmessage('Nuevo cliente dado de alta.');
+
+
+
+
+      //if seleccion = 1 then  AltaEnCaliente := true;
+      //if seleccion = 0 then  AltaEnCaliente := false;
+
+
+
+    {seleccion := messagedlg('No existe un cliente con el identificador especificado. ¿Desea crear un nuevo cliente?',mtConfirmation , mbOKCancel, 0);
+    if seleccion = mrCancel then
+       begin
+         AltaEnCaliente := false;
+      end;
+
+    if seleccion = mrOK then
+      begin
+        Tablas.MyTableClientes.Append;
+        AltaCliente.Show;
+        AltaEnCaliente := true;
+      end;
+     }
+    end
+    else
+    begin
+      // AltaEnCaliente := true;
+    end;
+
+end;
+
+
 
 end.

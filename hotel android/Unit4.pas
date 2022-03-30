@@ -28,6 +28,10 @@ type
     Label3: TLabel;
     Rectangle1: TRectangle;
     ScrollBox2: TScrollBox;
+    Rectangle2: TRectangle;
+    Label8: TLabel;
+    SpeedButton3: TSpeedButton;
+    Image3: TImage;
     procedure FormActivate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     function actualizarServicios(): Boolean;
@@ -36,6 +40,7 @@ type
     procedure ActualizarPrecioTabla();
     procedure FormCreate(Sender: TObject);
     procedure AltaEnCaliente(identificador: String);
+    procedure SpeedButton3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -792,6 +797,11 @@ begin
 end;
 
 
+
+procedure TFormularioDiario.SpeedButton3Click(Sender: TObject);
+begin
+  FormularioDiario.Close;
+end;
 
 //permite hacer un update del precio, si una vez ocupado/reservado, queremos cambiarlo
 

@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls, FMX.DialogService,
-  FMX.Controls.Presentation, FMX.Edit;
+  FMX.Controls.Presentation, FMX.Edit, FMX.Objects;
 
 type
   TAltaCliente = class(TForm)
@@ -16,9 +16,14 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Button1: TButton;
+    Rectangle1: TRectangle;
+    Label4: TLabel;
+    SpeedButton3: TSpeedButton;
+    Image3: TImage;
     procedure Button1Click(Sender: TObject);
     procedure ImportarIdentificador(id: String);
     function AltaEnCaliente(identificador: String): boolean;
+    procedure SpeedButton3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -77,6 +82,11 @@ begin
 end;
 
 
+
+procedure TAltaCliente.SpeedButton3Click(Sender: TObject);
+begin
+  AltaCliente.Close;
+end;
 
 //se llama desde los formularios, se encarga de consultar si el id de cliente introducido al hacer una
 //reserva existe, y si no, da la opción de crear uno nuevo (lo cual da paso a abrir este formulario)

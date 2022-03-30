@@ -11,7 +11,7 @@ uses
    FireDAC.FMXUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Data.DB,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Data.SqlExpr, FMX.DateTimeCtrls,  System.DateUtils,
-  FMX.Layouts, FMX.Objects;
+  FMX.Layouts, FMX.Objects, FMX.MultiView;
 
 type
   TPrincipal = class(TForm)
@@ -24,6 +24,14 @@ type
     Image1: TImage;
     SpeedButton2: TSpeedButton;
     Image2: TImage;
+    Button3: TButton;
+    Button4: TButton;
+    MultiView1: TMultiView;
+    Layout1: TLayout;
+    Rectangle1: TRectangle;
+    Button5: TButton;
+    SpeedButton3: TSpeedButton;
+    Image3: TImage;
     procedure Button2Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure DateEdit1Change(Sender: TObject);
@@ -32,11 +40,19 @@ type
     procedure SpeedButton2Click(Sender: TObject);
     procedure CrearHabitaciones();
     procedure ActualizarColores();
+    procedure PulsarBotonHabitacion(Sender: TObject);
+    function DevolverFechaSeleccionada():TDate;
+    function DevolverHabitacionSeleccionada():Integer;
+    procedure Button1Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
-    Fechaseleccionada: TDate;
+
   end;
 
 var
@@ -44,21 +60,47 @@ var
 
   HabitacionesBD: Array of Integer;
   PanelesHabitaciones: Array of TRectangle;
+  BotonesHabitaciones:  Array of TButton;
+  Fechaseleccionada: TDate;
+  HabitacionSeleccionada: Integer;
+
 
 implementation
 
 {$R *.fmx}
 {$R *.iPhone55in.fmx IOS}
   uses
-    Unit2, Unit3;
+    Unit2, Unit3, Unit5, Unit6, Unit7, Unit8;
 
+
+procedure TPrincipal.Button1Click(Sender: TObject);
+begin
+  FormularioPeriodo.ModoReserva;
+  FormularioPeriodo.Show;
+end;
 
 procedure TPrincipal.Button2Click(Sender: TObject);
 begin
-    PantallaMes.Show;
+  FormularioPeriodo.ModoAnular;
+  FormularioPeriodo.Show;
 end;
 
-  procedure TPrincipal.DateEdit1Change(Sender: TObject);
+procedure TPrincipal.Button3Click(Sender: TObject);
+begin
+   AltaCliente.Show;
+end;
+
+procedure TPrincipal.Button4Click(Sender: TObject);
+begin
+   NuevaHabitacion.show;
+end;
+
+procedure TPrincipal.Button5Click(Sender: TObject);
+begin
+  CrearTemporada.show;
+end;
+
+procedure TPrincipal.DateEdit1Change(Sender: TObject);
 begin
    Fechaseleccionada := DateEdit1.Date;
    CargarDia();
@@ -93,6 +135,11 @@ begin
      CargarDia();
 end;
 
+procedure TPrincipal.SpeedButton3Click(Sender: TObject);
+begin
+    MultiView1.ShowMaster;
+end;
+
 procedure TPrincipal.CargarDia();
 begin
     DateEdit1.Date := FechaSeleccionada;
@@ -102,6 +149,7 @@ end;
 procedure TPrincipal.CrearHabitaciones();
 var
 PanelHabitacion : TRectangle;
+BotonHabitacion : TButton;
 LabelHabitacion : TLabel;
 fila: integer;
 columna: integer;
@@ -110,6 +158,8 @@ cantidadHabitaciones: integer;
 begin
    cantidadHabitaciones:= Tablas.MyTableHabitaciones.RecordCount;  //esta variable recogera la cantidad de habitaciones de la bbdd
    SetLength(HabitacionesBD, cantidadHabitaciones);
+   SetLength(BotonesHabitaciones, cantidadHabitaciones);
+   SetLength(PanelesHabitaciones, cantidadHabitaciones);
 
      //primero borrar los paneles, vaciar el array.
   if Length(PanelesHabitaciones) > 0 then
@@ -122,9 +172,7 @@ begin
 
    //guardar los nº de habitaciones
     i:=0;
-    cantidadHabitaciones:= Tablas.MyTableHabitaciones.RecordCount;  //esta variable recogera la cantidad de habitaciones de la bbdd
-    SetLength(HabitacionesBD, cantidadHabitaciones);
-    SetLength(PanelesHabitaciones, cantidadHabitaciones);
+
 
     Tablas.MyTableHabitaciones.First;
 
@@ -166,19 +214,42 @@ begin
         LabelHabitacion.Text:='Habitación '+IntToStr(HabitacionesBD[i]);
         LabelHabitacion.Position.Y:=5;
         LabelHabitacion.Position.X:=5;
-        LabelHabitacion.TextSettings.Font.Size := 7;
-        LabelHabitacion.Height := 40;
+        LabelHabitacion.StyledSettings := LabelHabitacion.StyledSettings - [TStyledSetting.Size];
+        LabelHabitacion.TextSettings.Font.Size := 14;
+        LabelHabitacion.Height := 30;
 
+        BotonHabitacion:=TButton.create(self);
+        BotonHabitacion.Parent:=PanelHabitacion;
+        BotonHabitacion.Position.Y:=60;
+        BotonHabitacion.Tag:=HabitacionesBD[i];
+        BotonHabitacion.Position.X:=0;
+        BotonHabitacion.Width:=110;
+        BotonHabitacion.Height:=50;
+        BotonHabitacion.Text:='Abrir mes';
 
         columna := columna + 110;
         PanelesHabitaciones[i]:= PanelHabitacion;
+        BotonesHabitaciones[i]:=BotonHabitacion;
     end ;
 
+    //cada botón abrirá la pantalla mes con la habitación seleccionada
+    for i := 0 to (Length(BotonesHabitaciones) - 1) do
+      begin
+         BotonesHabitaciones[i].OnClick := PulsarBotonHabitacion;
+      end;
 
   cargarDia();
 end;
 
 
+procedure TPrincipal.PulsarBotonHabitacion(Sender: TObject);
+var
+boton : TButton;
+begin
+  boton := TButton(Sender);
+  HabitacionSeleccionada := boton.Tag;
+  PantallaMes.show();
+end;
 
 
 
@@ -230,5 +301,19 @@ begin
      end;
 
 end;
+
+
+//usamos estas funciones para pasar la habitacion y fecha al otro form (pantalla mes)
+
+function TPrincipal.DevolverFechaSeleccionada(): TDate;
+begin
+    DevolverFechaSeleccionada := FechaSeleccionada;
+end;
+
+function TPrincipal.DevolverHabitacionSeleccionada(): Integer;
+begin
+    DevolverHabitacionSeleccionada := HabitacionSeleccionada;
+end;
+
 
 end.
