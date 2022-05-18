@@ -208,4 +208,34 @@ object Tablas: TTablas
     Top = 48
     EncryptedPassword = '9EFF9BFF92FF96FF91FF'
   end
+  object MyTableUsuarios: TMyTable
+    TableName = 'usuarios'
+    Connection = MyConnection12
+    Options.FieldOrigins = foNone
+    Left = 176
+    Top = 504
+    object MyTableUsuariosid: TIntegerField
+      FieldName = 'id'
+    end
+    object MyTableUsuariosusuario: TStringField
+      FieldName = 'usuario'
+      Size = 50
+    end
+    object MyTableUsuarioscorreo: TStringField
+      FieldName = 'correo'
+      Size = 50
+    end
+    object MyTableUsuarioscliente: TStringField
+      FieldName = 'cliente'
+      Size = 50
+    end
+    object MyTableUsuariosperfil: TStringField
+      FieldName = 'perfil'
+      Size = 50
+    end
+    object MyTableUsuariospassword: TStringField
+      FieldName = 'password'
+      Size = 50
+    end
+  end
 end

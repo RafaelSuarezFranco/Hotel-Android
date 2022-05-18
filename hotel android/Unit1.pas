@@ -66,13 +66,14 @@ var
   Fechaseleccionada: TDate;
   HabitacionSeleccionada: Integer;
 
+  login1 : boolean;  //controlar si se ha producido un login
 
 implementation
 
 {$R *.fmx}
 {$R *.iPhone55in.fmx IOS}
   uses
-    Unit2, Unit3, Unit5, Unit6, Unit7, Unit8;
+    Unit2, Unit3, Unit5, Unit6, Unit7, Unit8, Unit9;
 
 
 procedure TPrincipal.Button1Click(Sender: TObject);
@@ -110,6 +111,15 @@ end;
 
 procedure TPrincipal.FormActivate(Sender: TObject);
 begin
+
+if login1 = false then
+  begin
+      //para enseñar el login primero de todo, lo mostramos con showmodal mientras se activa el principal. Hay que meterlo en esta
+      //condicion porque al cerrar algunas ventanas de informes,se reactiva el principal y por tanto se muestra el login otra vez.
+       //Login.Show;
+       login1 := true;
+  end;
+
   Tablas.MyTableClientes.Open;
   Tablas.MyTableHabitaciones.Open;
   Tablas.MyTableEntradas.Open;
@@ -118,6 +128,7 @@ begin
   Tablas.MyTableTemporadas.Open;
   Tablas.MyTableServicios.Open;
   Tablas.MyQuery1.Open;
+  Tablas.MyTableUsuarios.Open;
 
   Fechaseleccionada := Now();
 

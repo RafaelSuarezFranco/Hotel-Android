@@ -6,6 +6,9 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, Data.DB,  System.DateUtils,
   MyAccess, MemDS, DBAccess, FMX.ListBox, FMX.Controls.Presentation,
+ //  FireDAC.Comp.Client, Vcl.StdCtrls,
+ IdGlobal, IdHash, System.RegularExpressions,  IdHashMessageDigest,
+
   FMX.StdCtrls;
 
 type
@@ -54,12 +57,27 @@ type
     MyConnection1: TMyConnection;
     Label1: TLabel;
     Label2: TLabel;
+    MyTableUsuarios: TMyTable;
+    MyTableUsuariosid: TIntegerField;
+    MyTableUsuariosusuario: TStringField;
+    MyTableUsuarioscorreo: TStringField;
+    MyTableUsuarioscliente: TStringField;
+    MyTableUsuariosperfil: TStringField;
+    MyTableUsuariospassword: TStringField;
     function formatearFechaSQL(fecha: TDate): String;
     function rellenarComboHabitaciones(combo: TCombobox):TComboBox;
+     function passwordHash(password: String): String;
+    function IsMatch(const Input, Pattern: string): boolean;
+    function emailFormatoValido(const EmailAddress: string): boolean;
   private
     { Private declarations }
   public
     { Public declarations }
+
+  //datos del usuario logeado.
+    perfil: string;
+    cliente: string;
+    usuario: string;
   end;
 
 var
@@ -115,4 +133,50 @@ begin
 
     rellenarComboHabitaciones := combo;
 end;
+
+ //convierte una cadena en un hash MD5
+
+function TTablas.passwordHash(password: String): String;
+var
+    hashString : TIdHashMessageDigest5;
+begin
+ hashString  := nil;
+    try
+        hashString  := TIdHashMessageDigest5.Create;
+        passwordHash := IdGlobal.IndyLowerCase ( hashString .HashStringAsHex ( password ) );
+    finally
+        hashString.Free;
+    end;
+end;
+
+
+
+
+
+
+
+
+//validar el formato de un correo
+function TTablas.IsMatch(const Input, Pattern: string): boolean;
+begin
+  Result := TRegEx.IsMatch(Input, Pattern);
+end;
+
+
+function TTablas.emailFormatoValido(const EmailAddress: string): boolean;
+const
+  EMAIL_REGEX = '^((?>[a-zA-Z\d!#$%&''*+\-/=?^_`{|}~]+\x20*|"((?=[\x01-\x7f])'
+             +'[^"\\]|\\[\x01-\x7f])*"\x20*)*(?<angle><))?((?!\.)'
+             +'(?>\.?[a-zA-Z\d!#$%&''*+\-/=?^_`{|}~]+)+|"((?=[\x01-\x7f])'
+             +'[^"\\]|\\[\x01-\x7f])*")@(((?!-)[a-zA-Z\d\-]+(?<!-)\.)+[a-zA-Z]'
+             +'{2,}|\[(((?(?<!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d))'
+             +'{4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\'
+             +'[\x01-\x7f])+)\])(?(angle)>)$';
+begin
+  Result := IsMatch(EmailAddress, EMAIL_REGEX);
+end;
+
+
+
+
 end.
