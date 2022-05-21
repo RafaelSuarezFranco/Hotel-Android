@@ -482,6 +482,16 @@ servicioCheck: TCheckbox;
 
 begin
 
+ //reiniciamos todo lo que hemos tocado en caso de que venga un admin
+   Cliente := '';
+   Edit1.Text := '';
+   Edit1.ReadOnly := false;
+   RadioButton3.Enabled:= True;
+   Edit1.Visible := True;
+   Scrollbox1.Visible := True;
+   Button1.Visible := True;
+   Label3.Visible := True;
+
 
   Fecha:= EncodeDate(año, mes, dia); //Tdate del formulario
 
@@ -660,6 +670,53 @@ begin
         edit2.Text := FloatToStr(Round(PrecioFinal*100)/100);
         PrecioCalculado := PrecioFinal;
      end;
+
+
+
+
+   //GESTION DE CLIENTE
+  //si el cliente entra a administrar una habitación, tendrá restricciones.
+  if Tablas.perfil = 'cliente' then
+    begin
+        if (Tablas.cliente <> Cliente) and (Cliente <> '') then //si el cliente no está vacío y no es el que está logeado:
+          begin
+
+           Edit1.Visible := false;
+           Scrollbox1.Visible := false;
+           Button1.Visible := false;
+           Label3.Visible := false;
+
+              showMessage('Lo sentimos, la habitación está reservada/ocupada por otra persona.');
+              //PostMessage(Handle, WM_CLOSE, 0, 0);
+              FormularioDiario.Close;
+              modalresult := mrCancel;
+          end else
+          begin
+              if DiaPasado = true then
+                begin  //un cliente no puede administrar una habitación en el pasado.
+                   showMessage('Lo sentimos, no puede administrar una habitación en un día pasado.');
+                    //PostMessage(Handle, WM_CLOSE, 0, 0);
+                    FormularioDiario.Close;
+                    modalresult := mrCancel;
+                end;
+
+          end;
+
+        if Cliente = '' then
+          begin
+              Cliente := Tablas.cliente;
+              Edit1.Text := Tablas.cliente;
+          end;
+
+
+          //un cliente no puede marcar ocupado en ningún caso.
+          RadioButton3.Enabled:= false;
+
+          //en cualquier caso, el cliente no puede manipular los edits (su DNI y precio de la habitación).
+          Edit1.ReadOnly := true;
+          Edit2.ReadOnly := true;
+    end;
+
 
 end;
 

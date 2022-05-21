@@ -50,6 +50,7 @@ type
     procedure SpeedButton3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
+    procedure administrarClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -73,7 +74,7 @@ implementation
 {$R *.fmx}
 {$R *.iPhone55in.fmx IOS}
   uses
-    Unit2, Unit3, Unit5, Unit6, Unit7, Unit8, Unit9;
+    Unit2, Unit3, Unit4, Unit5, Unit6, Unit7, Unit8, Unit9;
 
 
 procedure TPrincipal.Button1Click(Sender: TObject);
@@ -111,6 +112,28 @@ end;
 
 procedure TPrincipal.FormActivate(Sender: TObject);
 begin
+
+ //escondemos o mostramos el menu en función del perfil.
+    if Tablas.perfil = 'cliente' then
+      begin
+        Button1.Visible := false;
+        Button2.Visible := false;
+        Button3.Visible := false;
+        Button4.Visible := false;
+        Button5.Visible := false;
+        //Button6.Visible := false;
+      end;
+
+    if Tablas.perfil = 'admin' then
+      begin
+        Button1.Visible := true;
+        Button2.Visible := true;
+        Button3.Visible := true;
+        Button4.Visible :=true;
+        Button5.Visible := true;
+        //Button6.Visible := true;
+      end;
+
 
 if login1 = false then
   begin
@@ -218,7 +241,7 @@ begin
         PanelHabitacion.Tag:=HabitacionesBD[i];
         PanelHabitacion.Position.Y:=fila*110;
         PanelHabitacion.Position.X:=columna;
-        //PanelHabitacion.Caption:='Habitación'+Inttostr(HabitacionesBD[i]);
+        PanelHabitacion.Tag:=HabitacionesBD[i];
         //PanelHabitacion.ParentBackground:=false;
         PanelHabitacion.Fill.Color:=TAlphaColorRec.Greenyellow;
 
@@ -249,6 +272,12 @@ begin
     for i := 0 to (Length(BotonesHabitaciones) - 1) do
       begin
          BotonesHabitaciones[i].OnClick := PulsarBotonHabitacion;
+      end;
+
+   //tocar el cuadro abre la gestión de habitación
+    for i := 0 to (Length(PanelesHabitaciones) - 1) do
+      begin
+         PanelesHabitaciones[i].OnClick := administrarClick;
       end;
 
   cargarDia();
@@ -327,6 +356,33 @@ function TPrincipal.DevolverHabitacionSeleccionada(): Integer;
 begin
     DevolverHabitacionSeleccionada := HabitacionSeleccionada;
 end;
+
+
+
+//entrar a habitación
+
+procedure TPrincipal.administrarClick(Sender: TObject); //popup para abrir formulario de reserva de un dia concreto
+var
+ panel: TRectangle;
+ i: integer;
+ j: integer;
+ etiqueta: integer;
+ dia: integer;
+  begin
+   panel := TRectangle(Sender);
+      //label1.Caption:=(Caller as Tpanel).name + ' ' +inttostr((Caller as Tpanel).tag);
+      etiqueta := panel.tag;
+      dia := DayOfTheMonth(FechaSeleccionada);
+
+    FormularioDiario.dia:= dia;
+    FormularioDiario.mes:= MonthOfTheYear(FechaSeleccionada);
+    FormularioDiario.año:= YearOf(FechaSeleccionada);
+    FormularioDiario.Habitacion := etiqueta;
+    FormularioDiario.origen := 'principal';
+    FormularioDiario.show();
+
+  end;
+
 
 
 end.
