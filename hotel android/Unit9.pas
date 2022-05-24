@@ -21,6 +21,9 @@ type
     IdMessage1: TIdMessage;
     IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
     IdSMTP1: TIdSMTP;
+    Button2: TButton;
+    Label2: TLabel;
+    Label3: TLabel;
     procedure FormActivate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -38,7 +41,7 @@ implementation
 {$R *.fmx}
 
 uses
-  Unit3, Unit1;
+  Unit3, Unit1, Unit10;
 
 procedure TLogin.Button1Click(Sender: TObject);
 var
@@ -124,7 +127,7 @@ end;
 
 procedure TLogin.Button2Click(Sender: TObject);
 begin
-  Principal.Close;
+  AltaUsuario.Show;
 end;
 
 procedure TLogin.FormActivate(Sender: TObject);
