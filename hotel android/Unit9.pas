@@ -132,7 +132,7 @@ end;
 
 procedure TLogin.FormActivate(Sender: TObject);
 begin
-
+    Tablas.passwordcorreo := '689196A338B739E5BDA0FB';
  //apertura de tablas
     Tablas.MyTableHabitaciones.Open;
     Tablas.MyTableEntradas.Open;

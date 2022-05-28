@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,  System.Math,
   FMX.StdCtrls, FMX.Controls.Presentation,  IdSSLOpenSSL, IdMessage, IdBaseComponent, IdComponent, IdTCPConnection,
   IdTCPClient, IdExplicitTLSClientServerBase, IdMessageClient, IdSMTPBase,
-   Data.DB, Vcl.Mask, IdIOHandler, IdIOHandlerSocket, IdIOHandlerStack, IdSSL,
+   Data.DB,  IdIOHandler, IdIOHandlerSocket, IdIOHandlerStack, IdSSL,       // Vcl.Mask,
  // IdSSLOpenSSL, IdMessage, IdBaseComponent, IdComponent, IdTCPConnection,
   IdSMTP, FMX.Edit
   ;
@@ -249,7 +249,7 @@ begin
   IdSMTP1.Host := 'smtp.gmail.com';
   IdSMTP1.Port := 587;
   IdSMTP1.Username := 'hotelrafaelsuarezfranco@gmail.com';
-  IdSMTP1.Password := 'hotelrsf127';
+  IdSMTP1.Password := Tablas.DesencriptarString(Tablas.passwordcorreo, 127);// 'hotelrsf127';
   IdSMTP1.IOHandler := IdSSLIOHandlerSocketOpenSSL1;
   //IdSMTP1.AuthType := satDefault;
 IdSMTP1.UseTLS := utUseExplicitTLS;

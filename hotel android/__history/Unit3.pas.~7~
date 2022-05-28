@@ -1,0 +1,182 @@
+unit Unit3;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, Data.DB,  System.DateUtils,
+  MyAccess, MemDS, DBAccess, FMX.ListBox, FMX.Controls.Presentation,
+ //  FireDAC.Comp.Client, Vcl.StdCtrls,
+ IdGlobal, IdHash, System.RegularExpressions,  IdHashMessageDigest,
+
+  FMX.StdCtrls;
+
+type
+  TTablas = class(TForm)
+    MyConnection12: TMyConnection;
+    MyTableClientes: TMyTable;
+    MyTableClientesid: TIntegerField;
+    MyTableClientesidentificador: TStringField;
+    MyTableClientesnombre: TStringField;
+    MyTableClientesapellidos: TStringField;
+    MyTableEntradas: TMyTable;
+    MyTableEntradasservicios: TMyTable;
+    MyTableHabitaciones: TMyTable;
+    MyTableHistoricoentradas: TMyTable;
+    MyTableServicios: TMyTable;
+    MyTableTemporadas: TMyTable;
+    MyQuery1: TMyQuery;
+    MyTableEntradasid: TIntegerField;
+    MyTableEntradasnumerohabitacion: TIntegerField;
+    MyTableEntradasfecha: TDateField;
+    MyTableEntradasestado: TStringField;
+    MyTableEntradascliente: TStringField;
+    MyTableEntradaspreciofinal: TFloatField;
+    MyTableEntradasserviciosid: TIntegerField;
+    MyTableEntradasserviciosnumerohabitacion: TIntegerField;
+    MyTableEntradasserviciosfecha: TDateField;
+    MyTableEntradasserviciosnombreservicio: TStringField;
+    MyTableHabitacionesid: TIntegerField;
+    MyTableHabitacionesnumero: TIntegerField;
+    MyTableHabitacionestipo: TStringField;
+    MyTableHabitacionespreciobase: TFloatField;
+    MyTableHistoricoentradasid: TIntegerField;
+    MyTableHistoricoentradasnumerohabitacion: TIntegerField;
+    MyTableHistoricoentradasfecha: TDateField;
+    MyTableHistoricoentradascliente: TStringField;
+    MyTableHistoricoentradaspreciofinal: TFloatField;
+    MyTableHistoricoentradasestado: TStringField;
+    MyTableServiciosid: TIntegerField;
+    MyTableServiciosnombreservicio: TStringField;
+    MyTableServiciosprecioservicio: TFloatField;
+    MyTableTemporadasid: TIntegerField;
+    MyTableTemporadasfechainicio: TDateField;
+    MyTableTemporadasfechafin: TDateField;
+    MyTableTemporadasnombretemporada: TStringField;
+    MyTableTemporadasprecioadicional: TFloatField;
+    MyConnection1: TMyConnection;
+    Label1: TLabel;
+    Label2: TLabel;
+    MyTableUsuarios: TMyTable;
+    MyTableUsuariosid: TIntegerField;
+    MyTableUsuariosusuario: TStringField;
+    MyTableUsuarioscorreo: TStringField;
+    MyTableUsuarioscliente: TStringField;
+    MyTableUsuariosperfil: TStringField;
+    MyTableUsuariospassword: TStringField;
+    function formatearFechaSQL(fecha: TDate): String;
+    function rellenarComboHabitaciones(combo: TCombobox):TComboBox;
+     function passwordHash(password: String): String;
+    function IsMatch(const Input, Pattern: string): boolean;
+    function emailFormatoValido(const EmailAddress: string): boolean;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+
+  //datos del usuario logeado.
+    perfil: string;
+    cliente: string;
+    usuario: string;
+  end;
+
+var
+  Tablas: TTablas;
+
+implementation
+
+{$R *.fmx}
+
+
+//formatea una fecha de tipo TDate a una String que se pueda usar en las FDQueries.
+
+function TTablas.formatearFechaSQL(fecha: TDate): String;
+  var
+  diabusqueda: String;
+  mesbusqueda: String;
+  fechabusqueda: String;
+begin
+    diabusqueda := IntToStr(DayOfTheMonth(fecha));
+    mesbusqueda := IntToStr(MonthOfTheYear(fecha));
+    if length(diabusqueda) < 2 then
+        diabusqueda:= '0'+ diabusqueda;
+    if length(mesbusqueda) < 2 then
+        mesbusqueda:= '0'+ mesbusqueda;
+    fechabusqueda:= IntToStr(YearOf(fecha))+'-'+mesbusqueda+'-'+diabusqueda;  //fecha formateada para buscarla con SQL
+
+    formatearFechaSQL := fechabusqueda;
+end;
+
+
+
+//recibe un combobox a rellenar, lo vacía y lo rellena con los números de habitación.
+
+function TTablas.rellenarComboHabitaciones(combo: TComboBox):TComboBox;
+  var
+cantidadHabitaciones: integer;
+i : integer;
+begin
+    i:=0;
+    cantidadHabitaciones:= Tablas.MyTableHabitaciones.RecordCount;
+
+    combo.Items.Clear; //vaciar el combobox para rellenarlo con las habitaciones
+    Tablas.MyTableHabitaciones.First;
+      while not  Tablas.MyTableHabitaciones.Eof do
+        begin
+          combo.Items.Add(IntToStr(Tablas.MyTableHabitacionesnumero.Value));
+          i:=i+1;
+          Tablas.MyTableHabitaciones.Next;
+        end;
+
+    //combo.Style := csDropDownList; //readonly
+    combo.ItemIndex := 0; //selecciona el primero
+
+    rellenarComboHabitaciones := combo;
+end;
+
+ //convierte una cadena en un hash MD5
+
+function TTablas.passwordHash(password: String): String;
+var
+    hashString : TIdHashMessageDigest5;
+begin
+ hashString  := nil;
+    try
+        hashString  := TIdHashMessageDigest5.Create;
+        passwordHash := IdGlobal.IndyLowerCase ( hashString .HashStringAsHex ( password ) );
+    finally
+        hashString.Free;
+    end;
+end;
+
+
+
+
+
+
+
+
+//validar el formato de un correo
+function TTablas.IsMatch(const Input, Pattern: string): boolean;
+begin
+  Result := TRegEx.IsMatch(Input, Pattern);
+end;
+
+
+function TTablas.emailFormatoValido(const EmailAddress: string): boolean;
+const
+  EMAIL_REGEX = '^((?>[a-zA-Z\d!#$%&''*+\-/=?^_`{|}~]+\x20*|"((?=[\x01-\x7f])'
+             +'[^"\\]|\\[\x01-\x7f])*"\x20*)*(?<angle><))?((?!\.)'
+             +'(?>\.?[a-zA-Z\d!#$%&''*+\-/=?^_`{|}~]+)+|"((?=[\x01-\x7f])'
+             +'[^"\\]|\\[\x01-\x7f])*")@(((?!-)[a-zA-Z\d\-]+(?<!-)\.)+[a-zA-Z]'
+             +'{2,}|\[(((?(?<!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d))'
+             +'{4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\'
+             +'[\x01-\x7f])+)\])(?(angle)>)$';
+begin
+  Result := IsMatch(EmailAddress, EMAIL_REGEX);
+end;
+
+
+
+
+end.
