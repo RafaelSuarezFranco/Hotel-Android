@@ -18,9 +18,6 @@ type
     Edit1: TEdit;
     Edit2: TEdit;
     Button1: TButton;
-    IdMessage1: TIdMessage;
-    IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
-    IdSMTP1: TIdSMTP;
     Button2: TButton;
     Label2: TLabel;
     Label3: TLabel;

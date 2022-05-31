@@ -226,7 +226,7 @@ begin
         end;
 
         PanelDia:=TRectangle.create(self);
-        PanelDia.Parent:=Panel1;
+        PanelDia.Parent:= Panel1;
         PanelDia.Width := 50;
         PanelDia.Height := 50;
         PanelDia.Tag:=dia;

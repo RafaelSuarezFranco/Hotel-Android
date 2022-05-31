@@ -4,6 +4,7 @@ object Login: TLogin
   Caption = 'Login'
   ClientHeight = 668
   ClientWidth = 361
+  Fill.Kind = Solid
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -8210,34 +8211,5 @@ object Login: TLogin
     Size.PlatformDefault = False
     Text = 'Contrase'#241'a:'
     TabOrder = 9
-  end
-  object IdMessage1: TIdMessage
-    AttachmentEncoding = 'UUE'
-    BccList = <>
-    CCList = <>
-    Encoding = meDefault
-    FromList = <
-      item
-      end>
-    Recipients = <>
-    ReplyTo = <>
-    ConvertPreamble = True
-    Left = 304
-    Top = 40
-  end
-  object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
-    MaxLineAction = maException
-    Port = 0
-    DefaultPort = 0
-    SSLOptions.Mode = sslmUnassigned
-    SSLOptions.VerifyMode = []
-    SSLOptions.VerifyDepth = 0
-    Left = 304
-    Top = 104
-  end
-  object IdSMTP1: TIdSMTP
-    SASLMechanisms = <>
-    Left = 304
-    Top = 168
   end
 end

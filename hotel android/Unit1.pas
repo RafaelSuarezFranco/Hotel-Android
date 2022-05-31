@@ -34,6 +34,15 @@ type
     Image3: TImage;
     Rectangle2: TRectangle;
     Label2: TLabel;
+    Label4: TLabel;
+    label3: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Image4: TImage;
+    Label9: TLabel;
+    Button6: TButton;
     procedure Button2Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure DateEdit1Change(Sender: TObject);
@@ -51,6 +60,8 @@ type
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
     procedure administrarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Button6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -68,7 +79,7 @@ var
   HabitacionSeleccionada: Integer;
 
   login1 : boolean;  //controlar si se ha producido un login
-
+  logout : boolean;
 implementation
 
 {$R *.fmx}
@@ -81,27 +92,39 @@ procedure TPrincipal.Button1Click(Sender: TObject);
 begin
   FormularioPeriodo.ModoReserva;
   FormularioPeriodo.Show;
+  MultiView1.HideMaster;
 end;
 
 procedure TPrincipal.Button2Click(Sender: TObject);
 begin
   FormularioPeriodo.ModoAnular;
   FormularioPeriodo.Show;
+  MultiView1.HideMaster;
 end;
 
 procedure TPrincipal.Button3Click(Sender: TObject);
 begin
    AltaCliente.Show;
+   MultiView1.HideMaster;
 end;
 
 procedure TPrincipal.Button4Click(Sender: TObject);
 begin
    NuevaHabitacion.show;
+   MultiView1.HideMaster;
 end;
 
 procedure TPrincipal.Button5Click(Sender: TObject);
 begin
   CrearTemporada.show;
+  MultiView1.HideMaster;
+end;
+
+procedure TPrincipal.Button6Click(Sender: TObject);
+begin
+  logout := true;
+  Principal.Close;
+  MultiView1.HideMaster;
 end;
 
 procedure TPrincipal.DateEdit1Change(Sender: TObject);
@@ -112,12 +135,15 @@ end;
 
 procedure TPrincipal.FormActivate(Sender: TObject);
 begin
+  label4.Text := Tablas.usuario;
+  label6.Text := Tablas.perfil;
+  label8.Text := Tablas.cliente;
 
  //escondemos o mostramos el menu en función del perfil.
     if Tablas.perfil = 'cliente' then
       begin
-        Button1.Visible := false;
-        Button2.Visible := false;
+        {Button1.Visible := false;
+        Button2.Visible := false; }
         Button3.Visible := false;
         Button4.Visible := false;
         Button5.Visible := false;
@@ -126,8 +152,8 @@ begin
 
     if Tablas.perfil = 'admin' then
       begin
-        Button1.Visible := true;
-        Button2.Visible := true;
+       { Button1.Visible := true;
+        Button2.Visible := true;   }
         Button3.Visible := true;
         Button4.Visible :=true;
         Button5.Visible := true;
@@ -157,6 +183,7 @@ if login1 = false then
 
   CrearHabitaciones();
 end;
+
 
 
 procedure TPrincipal.SpeedButton1Click(Sender: TObject);
@@ -384,5 +411,20 @@ var
   end;
 
 
+procedure TPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   if logout = true then
+   begin
+      Login.Edit1.Text := '';
+      Login.Edit2.Text := '';
+      Principal.Close();
+   end else
+   begin
+     Login.Close();
+   end;
+
+   logout := false;
+   MultiView1.HideMaster;
+end;
 
 end.

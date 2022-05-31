@@ -1,3 +1,7 @@
 usuarios, correos
 alta de cliente en caliente
 registrarse como usuario
+
+logout, mostrar perfil en menu
+
+implementar usuario en reserva anular periodo
