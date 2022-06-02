@@ -8,7 +8,15 @@ uses
   MyAccess, MemDS, DBAccess, FMX.ListBox, FMX.Controls.Presentation,
  //  FireDAC.Comp.Client, Vcl.StdCtrls,
  IdGlobal, IdHash, System.RegularExpressions,  IdHashMessageDigest,
-
+  //Androidapi.JNI.GraphicsContentViewText, Androidapi.JNIBridge, Androidapi.JNI.JavaTypes, FMX.Helpers.Android, Androidapi.JNI.Net, Androidapi.JNI.Os, Androidapi.IOUtils,
+  Androidapi.JNI.GraphicsContentViewText,
+   Androidapi.JNI.App,
+   Androidapi.JNIBridge,
+   Androidapi.JNI.JavaTypes,
+   Androidapi.Helpers,
+   Androidapi.JNI.Net,
+   Androidapi.JNI.Os,
+   Androidapi.IOUtils,
   FMX.StdCtrls;
 
 type
@@ -71,6 +79,14 @@ type
     function emailFormatoValido(const EmailAddress: string): boolean;
     function EncriptarString(const S :String; Key: Word): String;
     function DesencriptarString(const S: String; Key: Word): String;
+  //  function CreateEmail(const Recipient, Subject, Content, Attachment: string);
+  procedure wwEmail(
+   const Recipients: Array of String;
+   const ccRecipients: Array of String;
+   const bccRecipients: Array of String;
+   Subject, Content,
+   AttachmentPath: string;
+   mimeTypeStr: string = ''); //; Protocol: TwwMailProtocol=TwwMailProtocol.Ole);
   private
     { Private declarations }
   public
@@ -226,6 +242,116 @@ begin
     Key := (tmpKey + Key) * CKEY1 + CKEY2;
   end;
   Result:= UTF8Decode(RStr);
+end;
+
+
+
+ {
+function TTablas.CreateEmail(const Recipient, Subject, Content,
+ Attachment: string);
+var
+ Intent: JIntent;
+ Uri: Jnet_Uri;
+ AttachmentFile: JFile;
+begin
+ Intent := TJIntent.Create;
+ Intent.setAction(TJIntent.JavaClass.ACTION_SEND);
+ Intent.setFlags(TJIntent.JavaClass.FLAG_ACTIVITY_NEW_TASK);
+ Intent.putExtra(TJIntent.JavaClass.EXTRA_EMAIL, (Recipient));
+ Intent.putExtra(TJIntent.JavaClass.EXTRA_SUBJECT, (Subject));
+ Intent.putExtra(TJIntent.JavaClass.EXTRA_TEXT, (Content));
+
+
+
+ Intent.putExtra(TJIntent.JavaClass.EXTRA_STREAM,
+   TJParcelable.Wrap((Uri as ILocalObject).GetObjectID));
+
+ Intent.setType(('vnd.android.cursor.dir/email'));
+
+ //SharedActivity.startActivity(Intent);
+end;
+
+ //CreateEmail('xxx@shaw.ca', 'Test Results', Memo1.Lines.text,'/sdcard/Download/Demo.pdf');
+
+      }
+
+procedure TTablas.wwEmail(
+   const Recipients: Array of String;
+   const ccRecipients: Array of String;
+   const bccRecipients: Array of String;
+   subject, Content, AttachmentPath: string;
+   mimeTypeStr: string = ''); //; Protocol: TwwMailProtocol=TwwMailProtocol.ole);
+var
+  Intent: JIntent;
+  Uri: Jnet_Uri;
+  AttachmentFile: JFile;
+  i: integer;
+  emailAddresses: TJavaObjectArray<JString>;
+  ccAddresses: TJavaObjectArray<JString>;
+  fileNameTemp: JString;
+  CacheName: string;
+  IntentChooser: JIntent;
+  ChooserCaption: string;
+begin
+  Intent := TJIntent.Create;
+  Intent.setAction(TJIntent.JavaClass.ACTION_Send);
+  Intent.setFlags(TJIntent.JavaClass.FLAG_ACTIVITY_NEW_TASK);
+
+  emailAddresses := TJavaObjectArray<JString>.Create(length(Recipients));
+  for i := Low(Recipients) to High(Recipients) do
+    emailAddresses.Items[i] := StringToJString(Recipients[i]);
+
+  ccAddresses := TJavaObjectArray<JString>.Create(length(ccRecipients));
+  for i := Low(ccRecipients) to High(ccRecipients) do
+    ccAddresses.Items[i] := StringToJString(ccRecipients[i]);
+
+  Intent.putExtra(TJIntent.JavaClass.EXTRA_EMAIL, emailAddresses);
+  Intent.putExtra(TJIntent.JavaClass.EXTRA_CC, ccAddresses);
+  Intent.putExtra(TJIntent.JavaClass.EXTRA_SUBJECT, StringToJString(subject));
+  Intent.putExtra(TJIntent.JavaClass.EXTRA_TEXT, StringToJString(Content));
+
+  // Just filename portion for android services
+  if AttachmentPath<>'' then
+  begin
+  {
+    CacheName := GetExternalCacheDir + TPath.DirectorySeparatorChar +
+      TPath.GetFileName(AttachmentPath);
+    if FileExists(CacheName) then
+     Tfile.Delete(CacheName);
+    Tfile.Copy(AttachmentPath, CacheName);
+       }
+    fileNameTemp := StringToJString(CacheName);
+    AttachmentFile := TJFile.JavaClass.init(fileNameTemp);
+
+    if AttachmentFile <> nil then // attachment found
+    begin
+      AttachmentFile.setReadable(True, false);
+      if not TOSVersion.Check(7) then
+      begin
+        Uri := TJnet_Uri.JavaClass.fromFile(AttachmentFile);
+        Intent.putExtra(TJIntent.JavaClass.EXTRA_STREAM,
+          TJParcelable.Wrap((Uri as ILocalObject).GetObjectID));
+      end
+      else begin  // support android 24  and later
+        Intent.setFlags(TJIntent.JavaClass.FLAG_GRANT_READ_URI_PERMISSION);
+        Uri := TAndroidHelper.JFileToJURI(AttachmentFile);
+        // 2/28/2020 - Missing this line before so attachment missing
+        Intent.putExtra(TJIntent.JavaClass.EXTRA_STREAM,
+          TJParcelable.Wrap((Uri as ILocalObject).GetObjectID));
+      end;
+//    Uri := FileProvider.getUriForFile(mReactContext,
+//                mReactContext.getApplicationContext().getPackageName() + ".provider",
+//                imageFile);
+    end
+  end;
+
+  Intent.setType(StringToJString('vnd.android.cursor.dir/email'));
+
+  ChooserCaption := 'Send To';
+  IntentChooser := TJIntent.JavaClass.createChooser(Intent,
+    StrToJCharSequence(ChooserCaption));
+  TAndroidHelper.Activity.startActivityForResult(IntentChooser, 0);
+
 end;
 
 end.

@@ -40,6 +40,8 @@ type
     { Private declarations }
   public
     { Public declarations }
+     origen: string; //para controlar que al volver de un formulario diario, no se reinicie la fecha.
+
   end;
 
 var
@@ -100,9 +102,15 @@ begin
    //debo quitar y reasignar este procedure al onChange del combobox cada vez que se activa, por algún motivo, ese prodecimiento
    //estaba causando un access violation al crear el combobox.
 
-   FechaSeleccionada := Principal.DevolverFechaSeleccionada;
-   HabitacionSeleccionada := Principal.DevolverHabitacionSeleccionada;
-   DateEdit1.Date := FechaSeleccionada;
+   if origen = 'principal' then
+    begin
+      FechaSeleccionada := Principal.DevolverFechaSeleccionada;
+      HabitacionSeleccionada := Principal.DevolverHabitacionSeleccionada;
+      DateEdit1.Date := FechaSeleccionada;
+      origen := '';
+    end;
+
+
 
 //COMBO HABITACIONES
  // en este caso no vamos a llamar al generador de combos de Tablas porque queremos que al crearse se seleccione una habitación

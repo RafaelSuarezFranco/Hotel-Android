@@ -178,14 +178,14 @@ begin
        registroValido := false;
        showmessage('El cliente especificado ya tiene un usuario en el sistema.');
     end;
-
+    {
     if Edit8.Text <> codigoVerificacion then
       begin
          registroValido := false;
          showmessage('El código de verificación no es correcto.');
          showmessage(codigoVerificacion);
       end;
-
+         }
 
   end;
 
@@ -227,6 +227,8 @@ correoValido: boolean;
 
 codigoInput: string;
 begin
+  //Tablas.wwEmail(['mildoscientosveintisiete1227@gmail.com'], [], [], 'Codigo verificación Hotel RSF', 'Su código es:', '');
+
   IdMessage1.Clear;
 
 // IO HANDLER SETTINGS //

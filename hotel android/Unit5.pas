@@ -399,11 +399,7 @@ begin
     end;
 
 
- if Tablas.perfil = 'cliente' then
-  begin
-    Edit1.Text := Tablas.cliente;
-    Edit1.ReadOnly := True;
-  end;
+
 
 //COMBO HABITACIONES
 
@@ -413,6 +409,11 @@ begin
    DateEdit2.Date := Now;
    Edit1.Text:= '';
 
+if Tablas.perfil = 'cliente' then
+  begin
+    Edit1.Text := Tablas.cliente;
+    Edit1.ReadOnly := True;
+  end;
 
     //SERVICIOS
 

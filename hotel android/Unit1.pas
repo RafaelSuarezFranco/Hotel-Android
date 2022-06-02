@@ -317,6 +317,7 @@ boton : TButton;
 begin
   boton := TButton(Sender);
   HabitacionSeleccionada := boton.Tag;
+  Pantallames.origen := 'principal';
   PantallaMes.show();
 end;
 
