@@ -110,13 +110,13 @@ end;
 
 procedure TPrincipal.Button4Click(Sender: TObject);
 begin
-   NuevaHabitacion.show;
+   AltaHabitacion.show;
    MultiView1.HideMaster;
 end;
 
 procedure TPrincipal.Button5Click(Sender: TObject);
 begin
-  CrearTemporada.show;
+  AltaTemporada.show;
   MultiView1.HideMaster;
 end;
 

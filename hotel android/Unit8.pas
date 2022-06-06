@@ -9,7 +9,7 @@ uses
   FMX.EditBox, FMX.SpinBox, FMX.Objects;
 
 type
-  TCrearTemporada = class(TForm)
+  TAltaTemporada = class(TForm)
     DateEdit1: TDateEdit;
     DateEdit2: TDateEdit;
     Button1: TButton;
@@ -34,7 +34,7 @@ type
   end;
 
 var
-  CrearTemporada: TCrearTemporada;
+  AltaTemporada: TAltaTemporada;
 
 implementation
 
@@ -47,7 +47,7 @@ uses
 
 //botón para confirmar la creación de temporada
 
-procedure TCrearTemporada.Button1Click(Sender: TObject);
+procedure TAltaTemporada.Button1Click(Sender: TObject);
 var
 fechainicio: TDate;
 fechafin: TDate;
@@ -113,7 +113,7 @@ begin
       Tablas.MyTableTemporadasprecioadicional.Value := precio;
       Tablas.MyTableTemporadas.Post;
 
-      CrearTemporada.Close;
+      AltaTemporada.Close;
     end else
     begin
       showmessage('El periodo introducido se cruza con una temporada existente.');
@@ -123,7 +123,7 @@ end;
 
 
 
-procedure TCrearTemporada.FormActivate(Sender: TObject);
+procedure TAltaTemporada.FormActivate(Sender: TObject);
 begin
   DateEdit1.Date := Now();
   DateEdit2.Date := Now();
@@ -131,9 +131,9 @@ end;
 
 
 
-procedure TCrearTemporada.SpeedButton3Click(Sender: TObject);
+procedure TAltaTemporada.SpeedButton3Click(Sender: TObject);
 begin
-   CrearTemporada.Close;
+   AltaTemporada.Close;
 end;
 
 end.

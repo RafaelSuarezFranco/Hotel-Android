@@ -9,14 +9,14 @@ uses
  //  FireDAC.Comp.Client, Vcl.StdCtrls,
  IdGlobal, IdHash, System.RegularExpressions,  IdHashMessageDigest,
   //Androidapi.JNI.GraphicsContentViewText, Androidapi.JNIBridge, Androidapi.JNI.JavaTypes, FMX.Helpers.Android, Androidapi.JNI.Net, Androidapi.JNI.Os, Androidapi.IOUtils,
-  Androidapi.JNI.GraphicsContentViewText,
+{  Androidapi.JNI.GraphicsContentViewText,
    Androidapi.JNI.App,
    Androidapi.JNIBridge,
    Androidapi.JNI.JavaTypes,
    Androidapi.Helpers,
    Androidapi.JNI.Net,
    Androidapi.JNI.Os,
-   Androidapi.IOUtils,
+   Androidapi.IOUtils,  }
   FMX.StdCtrls;
 
 type
@@ -80,13 +80,13 @@ type
     function EncriptarString(const S :String; Key: Word): String;
     function DesencriptarString(const S: String; Key: Word): String;
   //  function CreateEmail(const Recipient, Subject, Content, Attachment: string);
-  procedure wwEmail(
+  {procedure wwEmail(
    const Recipients: Array of String;
    const ccRecipients: Array of String;
    const bccRecipients: Array of String;
    Subject, Content,
    AttachmentPath: string;
-   mimeTypeStr: string = ''); //; Protocol: TwwMailProtocol=TwwMailProtocol.Ole);
+   mimeTypeStr: string = ''); //; Protocol: TwwMailProtocol=TwwMailProtocol.Ole);  }
   private
     { Private declarations }
   public
@@ -274,7 +274,7 @@ end;
  //CreateEmail('xxx@shaw.ca', 'Test Results', Memo1.Lines.text,'/sdcard/Download/Demo.pdf');
 
       }
-
+         {
 procedure TTablas.wwEmail(
    const Recipients: Array of String;
    const ccRecipients: Array of String;
@@ -313,13 +313,13 @@ begin
   // Just filename portion for android services
   if AttachmentPath<>'' then
   begin
-  {
+
     CacheName := GetExternalCacheDir + TPath.DirectorySeparatorChar +
       TPath.GetFileName(AttachmentPath);
     if FileExists(CacheName) then
      Tfile.Delete(CacheName);
     Tfile.Copy(AttachmentPath, CacheName);
-       }
+
     fileNameTemp := StringToJString(CacheName);
     AttachmentFile := TJFile.JavaClass.init(fileNameTemp);
 
@@ -353,5 +353,5 @@ begin
   TAndroidHelper.Activity.startActivityForResult(IntentChooser, 0);
 
 end;
-
+      }
 end.

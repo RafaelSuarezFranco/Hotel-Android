@@ -8,7 +8,7 @@ uses
   FMX.EditBox, FMX.SpinBox, FMX.Controls.Presentation, FMX.Edit, FMX.Objects;
 
 type
-  TNuevaHabitacion = class(TForm)
+  TAltaHabitacion = class(TForm)
     Edit1: TEdit;
     Edit2: TEdit;
     SpinBox1: TSpinBox;
@@ -29,7 +29,7 @@ type
   end;
 
 var
-  NuevaHabitacion: TNuevaHabitacion;
+  AltaHabitacion: TAltaHabitacion;
 
 implementation
 
@@ -41,7 +41,7 @@ implementation
 
 //botón para confirmar la creación de la habitación.
 
-procedure TNuevaHabitacion.Button1Click(Sender: TObject);
+procedure TAltaHabitacion.Button1Click(Sender: TObject);
 var
 nhabitacion: integer;
 precio: double;
@@ -91,7 +91,7 @@ begin
       Tablas.MyTableHabitacionespreciobase.Value := precio;
       Tablas.MyTableHabitaciones.Post;
       showmessage('Se ha creado la nueva habitación.');
-      NuevaHabitacion.Close;
+      AltaHabitacion.Close;
       //refrescamos la pantalla principal para que se vea la nueva habitación
       Principal.CargarDia;
     end;
@@ -99,9 +99,9 @@ begin
 end;
 
 
-procedure TNuevaHabitacion.SpeedButton3Click(Sender: TObject);
+procedure TAltaHabitacion.SpeedButton3Click(Sender: TObject);
 begin
-   NuevaHabitacion.Close;
+   AltaHabitacion.Close;
 end;
 
 end.

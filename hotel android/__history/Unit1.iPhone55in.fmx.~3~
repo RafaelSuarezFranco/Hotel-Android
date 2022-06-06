@@ -1,9 +1,0 @@
-inherited Principal_iPhone55in: TPrincipal_iPhone55in
-  ClientHeight = 716
-  ClientWidth = 414
-  DesignerMasterStyle = 3
-  inherited ScrollBox1: TScrollBox
-    Viewport.Width = 250.000000000000000000
-    Viewport.Height = 500.000000000000000000
-  end
-end
