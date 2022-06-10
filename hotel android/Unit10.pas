@@ -36,9 +36,6 @@ type
     Label7: TLabel;
     Label8: TLabel;
     Button1: TButton;
-    Edit8: TEdit;
-    Label9: TLabel;
-    Button2: TButton;
     procedure SpeedButton3Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -90,7 +87,7 @@ begin
 
 
   if (Edit1.Text = '') or (Edit2.Text = '') or (Edit3.Text = '') or
-    (Edit6.Text = '') or (Edit7.Text = '') or (Edit8.Text = '') then
+    (Edit6.Text = '') or (Edit7.Text = '')  then               //or (Edit8.Text = '')
   begin
     showmessage('Por favor, rellena todos los campos');
     registroValido := false;

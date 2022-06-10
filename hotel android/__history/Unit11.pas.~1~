@@ -1,0 +1,34 @@
+unit Unit11;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
+  FMX.Edit, FMX.Objects, FMX.Controls.Presentation;
+
+type
+  TAltaServicio = class(TForm)
+    Rectangle1: TRectangle;
+    Label4: TLabel;
+    SpeedButton3: TSpeedButton;
+    Image3: TImage;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    Button1: TButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  AltaServicio: TAltaServicio;
+
+implementation
+
+{$R *.fmx}
+
+end.

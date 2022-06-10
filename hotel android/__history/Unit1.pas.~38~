@@ -34,6 +34,15 @@ type
     Image3: TImage;
     Rectangle2: TRectangle;
     Label2: TLabel;
+    Label4: TLabel;
+    label3: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Image4: TImage;
+    Label9: TLabel;
+    Button6: TButton;
     procedure Button2Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure DateEdit1Change(Sender: TObject);
@@ -50,6 +59,9 @@ type
     procedure SpeedButton3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
+    procedure administrarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Button6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -67,40 +79,52 @@ var
   HabitacionSeleccionada: Integer;
 
   login1 : boolean;  //controlar si se ha producido un login
-
+  logout : boolean;
 implementation
 
 {$R *.fmx}
 {$R *.iPhone55in.fmx IOS}
   uses
-    Unit2, Unit3, Unit5, Unit6, Unit7, Unit8, Unit9;
+    Unit2, Unit3, Unit4, Unit5, Unit6, Unit7, Unit8, Unit9;
 
 
 procedure TPrincipal.Button1Click(Sender: TObject);
 begin
   FormularioPeriodo.ModoReserva;
   FormularioPeriodo.Show;
+  MultiView1.HideMaster;
 end;
 
 procedure TPrincipal.Button2Click(Sender: TObject);
 begin
   FormularioPeriodo.ModoAnular;
   FormularioPeriodo.Show;
+  MultiView1.HideMaster;
 end;
 
 procedure TPrincipal.Button3Click(Sender: TObject);
 begin
    AltaCliente.Show;
+   MultiView1.HideMaster;
 end;
 
 procedure TPrincipal.Button4Click(Sender: TObject);
 begin
-   NuevaHabitacion.show;
+   AltaHabitacion.show;
+   MultiView1.HideMaster;
 end;
 
 procedure TPrincipal.Button5Click(Sender: TObject);
 begin
-  CrearTemporada.show;
+  AltaTemporada.show;
+  MultiView1.HideMaster;
+end;
+
+procedure TPrincipal.Button6Click(Sender: TObject);
+begin
+  logout := true;
+  Principal.Close;
+  MultiView1.HideMaster;
 end;
 
 procedure TPrincipal.DateEdit1Change(Sender: TObject);
@@ -111,12 +135,37 @@ end;
 
 procedure TPrincipal.FormActivate(Sender: TObject);
 begin
+  label4.Text := Tablas.usuario;
+  label6.Text := Tablas.perfil;
+  label8.Text := Tablas.cliente;
+
+ //escondemos o mostramos el menu en función del perfil.
+    if Tablas.perfil = 'cliente' then
+      begin
+        {Button1.Visible := false;
+        Button2.Visible := false; }
+        Button3.Visible := false;
+        Button4.Visible := false;
+        Button5.Visible := false;
+        //Button6.Visible := false;
+      end;
+
+    if Tablas.perfil = 'admin' then
+      begin
+       { Button1.Visible := true;
+        Button2.Visible := true;   }
+        Button3.Visible := true;
+        Button4.Visible :=true;
+        Button5.Visible := true;
+        //Button6.Visible := true;
+      end;
+
 
 if login1 = false then
   begin
       //para enseñar el login primero de todo, lo mostramos con showmodal mientras se activa el principal. Hay que meterlo en esta
       //condicion porque al cerrar algunas ventanas de informes,se reactiva el principal y por tanto se muestra el login otra vez.
-       //Login.ShowModal;
+       //Login.Show;
        login1 := true;
   end;
 
@@ -134,6 +183,7 @@ if login1 = false then
 
   CrearHabitaciones();
 end;
+
 
 
 procedure TPrincipal.SpeedButton1Click(Sender: TObject);
@@ -218,7 +268,7 @@ begin
         PanelHabitacion.Tag:=HabitacionesBD[i];
         PanelHabitacion.Position.Y:=fila*110;
         PanelHabitacion.Position.X:=columna;
-        //PanelHabitacion.Caption:='Habitación'+Inttostr(HabitacionesBD[i]);
+        PanelHabitacion.Tag:=HabitacionesBD[i];
         //PanelHabitacion.ParentBackground:=false;
         PanelHabitacion.Fill.Color:=TAlphaColorRec.Greenyellow;
 
@@ -251,6 +301,12 @@ begin
          BotonesHabitaciones[i].OnClick := PulsarBotonHabitacion;
       end;
 
+   //tocar el cuadro abre la gestión de habitación
+    for i := 0 to (Length(PanelesHabitaciones) - 1) do
+      begin
+         PanelesHabitaciones[i].OnClick := administrarClick;
+      end;
+
   cargarDia();
 end;
 
@@ -261,6 +317,7 @@ boton : TButton;
 begin
   boton := TButton(Sender);
   HabitacionSeleccionada := boton.Tag;
+  Pantallames.origen := 'principal';
   PantallaMes.show();
 end;
 
@@ -328,5 +385,47 @@ begin
     DevolverHabitacionSeleccionada := HabitacionSeleccionada;
 end;
 
+
+
+//entrar a habitación
+
+procedure TPrincipal.administrarClick(Sender: TObject); //popup para abrir formulario de reserva de un dia concreto
+var
+ panel: TRectangle;
+ i: integer;
+ j: integer;
+ etiqueta: integer;
+ dia: integer;
+  begin
+   panel := TRectangle(Sender);
+      //label1.Caption:=(Caller as Tpanel).name + ' ' +inttostr((Caller as Tpanel).tag);
+      etiqueta := panel.tag;
+      dia := DayOfTheMonth(FechaSeleccionada);
+
+    FormularioDiario.dia:= dia;
+    FormularioDiario.mes:= MonthOfTheYear(FechaSeleccionada);
+    FormularioDiario.año:= YearOf(FechaSeleccionada);
+    FormularioDiario.Habitacion := etiqueta;
+    FormularioDiario.origen := 'principal';
+    FormularioDiario.show();
+
+  end;
+
+
+procedure TPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   if logout = true then
+   begin
+      Login.Edit1.Text := '';
+      Login.Edit2.Text := '';
+      Principal.Close();
+   end else
+   begin
+     Login.Close();
+   end;
+
+   logout := false;
+   MultiView1.HideMaster;
+end;
 
 end.

@@ -43,6 +43,7 @@ type
     Image4: TImage;
     Label9: TLabel;
     Button6: TButton;
+    Button7: TButton;
     procedure Button2Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure DateEdit1Change(Sender: TObject);
@@ -62,6 +63,8 @@ type
     procedure administrarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
+
   private
     { Private declarations }
   public
@@ -85,7 +88,7 @@ implementation
 {$R *.fmx}
 {$R *.iPhone55in.fmx IOS}
   uses
-    Unit2, Unit3, Unit4, Unit5, Unit6, Unit7, Unit8, Unit9;
+    Unit2, Unit3, Unit4, Unit5, Unit6, Unit7, Unit8, Unit9, Unit11;
 
 
 procedure TPrincipal.Button1Click(Sender: TObject);
@@ -124,6 +127,12 @@ procedure TPrincipal.Button6Click(Sender: TObject);
 begin
   logout := true;
   Principal.Close;
+  MultiView1.HideMaster;
+end;
+
+procedure TPrincipal.Button7Click(Sender: TObject);
+begin
+  AltaServicio.Show;
   MultiView1.HideMaster;
 end;
 
@@ -320,6 +329,8 @@ begin
   Pantallames.origen := 'principal';
   PantallaMes.show();
 end;
+
+
 
 
 
